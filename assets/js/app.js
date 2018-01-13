@@ -9,7 +9,8 @@ var config = {
   };
   firebase.initializeApp(config);
 
-
+  //set db varible 
+  var database = firebase.database();
   //set up query url
   var userCity = "chicago";
   var userDate ="2018-01-20T15:00:00Z"
@@ -26,33 +27,36 @@ $.ajax({
 }) .done(function(response1){
   //generate image for each response1
 
-  // response1._embedded.events.length
+  // 
 //  console.log(response1._embedded.events[0]);
-    for (var i = 0; i < 1; i++) {
-      eventID = response1._embedded.events[i].id
+    for (var i = 0; i < response1._embedded.events.length; i++) {
+      var eventID = response1._embedded.events[i].id
+      var eventName = response1._embedded.events[i].name;
+      var eventDate = response1._embedded.events[i].dates.start.localDate;
+
       console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
-  }
+      database.ref(`search${i}`).set ({
+        name: eventName,
+        eventDate: eventDate,
+        eventID: eventID
+      })
+      }
+      
   })
+
+//Code Example of getting id from database, ajax call2 to get price, and then add back to db
 
   $.ajax({
     url: queryTwoURL,
     method: "GET"
   }) .done(function(response2){
-    console.log (`event price = ${response2.prices.data[0].attributes.value}`)
+    for (var j = 0; j < response2._embedded.events.length; j++) {
+    console.log (`event price = ${response2.prices.data[j].attributes.value}`)
+    }
 })
 
 
-//   //set up query url
-//   var queryTwoURL;
-//   //make api call
-// $.ajax({
-//   url: queryTwoURL,
-//   method: "GET"
-// }) .done(function(response1){
-//   //generate image for each response1
-//  console.log(response1.data);
-//   }
-// });
+
 //user inputs
 // $("#budget-input")
 // $("#date-input")
