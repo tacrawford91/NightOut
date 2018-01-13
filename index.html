@@ -4,19 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>NightOut</title>
     <!-- firebase connect -->
     <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <!-- css style frame goes here -->
     
-    <!-- custom stylesheet -->
+   <!-- custom stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
+
+   <!-- custom google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Cantarell|Fjalla+One" rel="stylesheet">
+
+   <!-- bootstrap connect -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-    
 
-<script src="assets/js/app.js"></script>    
+   <!-- add video background -->
+    <div class="div video-holder">
+            <video autoplay loop id="video-background" poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148422/screencap-wheel.png" muted>
+                <source src="assets/images/bg.mp4" type="video/mp4">
+            </video>
+    </div>
+
+   <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center"><img class ="icon" src="assets/images/icon.png" alt="icon"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center title">NightOut</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center tagline">Start with a budget, end with a blast.</div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12 center-form">
+                <form>
+                    <div class="form-group col-md-12">
+                        <input type="budget" class="form-control" id="budget" aria-describedby="budgetHelp" placeholder="Budget (in Dollars)">
+                        <input type="zip" class="form-control" id="zip" aria-describedby="zipHelp" placeholder="City or Zip Code">
+                        <input class="form-control" type="date" value="2018-01-13" id="date">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/number.js"></script>    
 </body>
 </html>

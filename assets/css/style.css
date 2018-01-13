@@ -1,1 +1,45 @@
-/* Place Holder  */
+#video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+  }
+
+.icon {
+    margin-top: 200px;
+    height: 150px;
+    width: auto;
+}
+
+.title {
+    font-size: 60px;
+    font-family: Fjalla One;
+    color: white;
+}
+
+.tagline {
+    font-family: Cantarell;
+    color: white;
+    font-size: 1.1em;
+}
+
+#budget, #zip, #date {
+    width: 200px;
+    float: left;
+    margin: 5px;
+}
+
+.btn-primary {
+    width: 100px;
+    margin: 5px;
+    background-color: #87D37C !important;
+    border-color: #87D37C !important;
+}
+
+.form-group {
+    left: 175px;
+}
