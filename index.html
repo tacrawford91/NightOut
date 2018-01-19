@@ -10,15 +10,16 @@
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <!-- css style frame goes here -->
-    
-   <!-- custom stylesheet -->
-    <link rel="stylesheet" href="assets/css/style.css">
 
    <!-- custom google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Cantarell|Fjalla+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cantarell|Fjalla+One|Lato" rel="stylesheet">
 
    <!-- bootstrap connect -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <!-- custom stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 <body>
 
@@ -47,15 +48,50 @@
                         <input type="budget" class="form-control" id="budget" aria-describedby="budgetHelp" placeholder="Budget (in Dollars)">
                         <input type="zip" class="form-control" id="zip" aria-describedby="zipHelp" placeholder="City or Zip Code">
                         <input class="form-control" type="date" value="2018-01-13" id="date">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">SEARCH</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <div class="container page-results">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="assets/images/icon-dark.png" class="icon2"><span>NightOut</span>
+              </a>
+          </div>
+      
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-right">
+              <div class="form-group">
+                <input type="budget" class="form-control" id="budget-nav" aria-describedby="budgetHelp" placeholder="Budget (in Dollars)">
+                <input type="zip" class="form-control" id="zip-nav" aria-describedby="zipHelp" placeholder="City or Zip Code">
+                <input class="form-control" type="date" value="2018-01-13" id="date-nav">
+                <button type="submit" class="btn btn-primary btn-nav">SEARCH</button>
+            </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="result-div">
+                    <h1>Test</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script src="assets/js/app.js"></script>
-<script src="assets/js/number.js"></script>    
+<script src="assets/js/search.js"></script>    
 </body>
 </html>
