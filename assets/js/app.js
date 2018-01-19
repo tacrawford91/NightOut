@@ -13,10 +13,10 @@ var config = {
   var database = firebase.database();
   //set up query url
   var userCity = "chicago";
-  var userDate ="2018-01-20T15:00:00Z"
-  var endDate = "2018-01-21T15:00:00Z"
+  var userDate ="2018-01-27T15:00:00Z"
+  var endDate = "2018-01-28T15:00:00Z"
   var budget = 100;
-  var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
+  var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
 //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
 //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
   var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=50&apikey=${tmAPIKey}`
@@ -28,6 +28,11 @@ var config = {
   var noPriceObjectArray = [];
   var eventPriceCounter = 0
   var htmladded = false 
+
+  
+  database.ref().set("");
+
+
 
 
 $.ajax({
@@ -42,16 +47,17 @@ $.ajax({
       eventIDArray.push(eventID);
       var eventName = response1._embedded.events[i].name;
       var eventDate = response1._embedded.events[i].dates.start.localDate;
-      console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
-      database.ref(`search/${eventID}`).set ({
+      var eventImage = response1._embedded.events[i].images[6].url;
+
+      // console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
+      database.ref(`search/${eventID}`).set ( {
         name: eventName,
         eventDate: eventDate,
-        eventID: eventID
+        eventID: eventID,
+        eventImage: eventImage
       })
     } 
-  })
-
-  database.ref(`search`).on("child_added", function(snapshot) {
+  }).then(function(){ database.ref(`search`).on("child_added", function(snapshot) {
       if (snapshot.val() == null) {
     return;
 }
@@ -63,10 +69,13 @@ $.ajax({
     }) .done(function(response2){
       //grab good responses and update db price, push into priced array and sort.
       database.ref(`search/${eventIDSearch}`).update({price:Number(response2.prices.data[0].attributes.value)})
+
+
       eventPriceObjectArray.push({
         eventName: snapshot.val().name,
         eventDate: snapshot.val().eventDate,
-        price: Number(response2.prices.data[0].attributes.value)
+        price: Number(response2.prices.data[0].attributes.value),
+        eventImage: snapshot.val().eventImage
       })
       eventPriceCounter++
       eventPriceObjectArray.sort(function(a,b) {
@@ -77,9 +86,11 @@ $.ajax({
       database.ref(`search/${eventIDSearch}`).update({price: "No price!"})
       noPriceObjectArray.push({
         eventName: snapshot.val().name,
-        eventDate: snapshot.val().eventDate
+        eventDate: snapshot.val().eventDate,
+        eventImage: snapshot.val().eventImage
       })
     })
+
     //html function
   });
 
@@ -103,7 +114,23 @@ $.ajax({
 
 
 
+  });
+})
 
+  $(document).ajaxStop(function() {
+      if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
+        //create html
+        eventPriceObjectArray.forEach(function(element){
+          //create content div
+          var priceContent = $("<p>").html(`<img src="${element.eventImage}"><h1>---- event name: ${element.eventName} ---- price: ${element.price} --</h1)`)
+          $(".priced").append(priceContent);
+        })
+        htmladded = true
+        } else {
+         console.log("NOOOOO HTMLLLLLL") //show loading, finding the best eventss
+
+        }  
+  })
 
 
 
