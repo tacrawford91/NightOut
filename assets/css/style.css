@@ -1,12 +1,9 @@
-/* Main */
-html, body {
-    width: 100%;
+html, body, .main-page {
     height: 100%;
-    position: relative;
 }
 
-body {
-    overflow: hidden;
+container {
+    min-height: 100%;
 }
 
 .container {
@@ -14,7 +11,6 @@ body {
     padding-right: 0px;
 }
 
-/* Video */
 #video-background {
     position: fixed;
     right: 0;
@@ -26,7 +22,6 @@ body {
     z-index: -100;
   }
 
-/* Landing Page Logo & Fields */
 .icon {
     margin-top: 200px;
     height: 150px;
@@ -45,7 +40,6 @@ body {
     font-size: 1.1em;
 }
 
-/* Input Fields & Search Btn */
 #budget, #zip, #date {
     width: 200px;
     height: 40px;
@@ -54,21 +48,21 @@ body {
     border-radius: 0 !important;
 }
 
-.btn-primary {
+.btn-primary, .btn-results {
     width: 100px;
     height: 40px;
     margin: 5px;
-    background: linear-gradient(to right, rgb(58, 185, 153) , rgb(110, 202, 96)) !important;
-    border: 0px solid transparent !important;
+    background: linear-gradient(to right, rgb(58, 185, 153) , rgb(110, 202, 96));
+    border: 0px solid transparent;
     font-family: Lato;
-    border-radius: 0 !important;
+    border-radius: 0;
+    color: white;
 }
 
 .form-group {
     left: 175px;
 }
 
-/* Navbar */
 .navbar-default {
     height: 80px;
     width: auto;
@@ -102,12 +96,10 @@ span {
     height: 40px;
 }
 
-/* Results Page */
-.page-results {
+#page-results {
     background-color: white;
     width: 100%;
     min-width: 100%;
-    clear: both;
     height: 1000px;
     margin-top: 300px;
  }
