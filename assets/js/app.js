@@ -28,8 +28,12 @@ var config = {
   var noPriceObjectArray = [];
   var eventPriceCounter = 0
   var htmladded = false 
+
   
   database.ref().set("");
+
+
+
 
 $.ajax({
   url: queryOneURL,
@@ -65,7 +69,8 @@ $.ajax({
     }) .done(function(response2){
       //grab good responses and update db price, push into priced array and sort.
       database.ref(`search/${eventIDSearch}`).update({price:Number(response2.prices.data[0].attributes.value)})
-      if (snapshot.val().eventDate )
+
+
       eventPriceObjectArray.push({
         eventName: snapshot.val().name,
         eventDate: snapshot.val().eventDate,
@@ -85,6 +90,29 @@ $.ajax({
         eventImage: snapshot.val().eventImage
       })
     })
+
+    //html function
+  });
+
+  database.ref("search").child().on("child_changed", function() {
+    if (snapshot.val() == null) {
+      return;
+  }
+    if (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
+      //create html
+      eventPriceObjectArray.forEach(function(element){
+        //create content div
+        var priceContent = $("<p>").html(`event name: ${element.eventName} ---- price: ${element.price}`)
+        $(".priced").append(priceContent);
+      })
+      htmladded = true
+    } else {
+      //show loading, finding the best eventss
+    }  
+  })
+
+
+
 
   });
 })
