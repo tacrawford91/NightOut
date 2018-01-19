@@ -27,6 +27,7 @@ var config = {
   var eventPriceObjectArray = [];
   var noPriceObjectArray = [];
   var eventPriceCounter = 0
+  var htmladded = false 
 
 
 $.ajax({
@@ -62,7 +63,6 @@ $.ajax({
     }) .done(function(response2){
       //grab good responses and update db price, push into priced array and sort.
       database.ref(`search/${eventIDSearch}`).update({price:Number(response2.prices.data[0].attributes.value)})
-      //create div for each and add to html
       eventPriceObjectArray.push({
         eventName: snapshot.val().name,
         eventDate: snapshot.val().eventDate,
@@ -74,13 +74,31 @@ $.ajax({
       })
     })
     .fail(function(){
+      database.ref(`search/${eventIDSearch}`).update({price: "No price!"})
       noPriceObjectArray.push({
         eventName: snapshot.val().name,
         eventDate: snapshot.val().eventDate
       })
-    })   
+    })
+    //html function
   });
 
+  database.ref("search").child().on("child_changed", function() {
+    if (snapshot.val() == null) {
+      return;
+  }
+    if (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
+      //create html
+      eventPriceObjectArray.forEach(function(element){
+        //create content div
+        var priceContent = $("<p>").html(`event name: ${element.eventName} ---- price: ${element.price}`)
+        $(".priced").append(priceContent);
+      })
+      htmladded = true
+    } else {
+      //show loading, finding the best eventss
+    }  
+  })
 
 
 
