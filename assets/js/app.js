@@ -13,34 +13,65 @@ var config = {
   var database = firebase.database();
   //set up query url
   var userCity = "chicago";
-  var userDate ="2018-01-27T15:00:00Z"
-  var endDate = "2018-01-28T15:00:00Z"
+  // var userDate ="2018-01-27T15:00:00Z"
+  var userDate;
+  var endDate;
   var budget = 100;
+
+  
   var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
-//wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
-//azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
-  var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=50&apikey=${tmAPIKey}`
+  //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
+  //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
+  var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=20&apikey=${tmAPIKey}`
   var eventID =  "vv178ZfYGkn1XoB7";
   var searchNumber = 0;
   var eventIDArray = [];
   var eventPriceArray = [];
   var eventPriceObjectArray = [];
   var noPriceObjectArray = [];
-  var eventPriceCounter = 0
+  var eventPriceCounter = 0;
   var htmladded = false 
-
+  
   
   database.ref().set("");
 
+//===================================================================
+//===================================================================
+
+// function pleaseGodLetItWork() {
+ 
+// };
+// });
 
 
+  
+  
+  $(".searchBtn").on("click", function(event){
+  database.ref(`search`).off("child_added")
+      searchNumber = 0;
+      eventIDArray = [];
+      eventPriceArray = [];
+      eventPriceObjectArray = [];
+      noPriceObjectArray = [];
+      eventPriceCounter = 0;
+      htmladded = false 
 
-$.ajax({
-  url: queryOneURL,
-  method: "GET"
-}) .done(function(response1){
-
-//  console.log(response1._embedded.events[0]);
+      database.ref().set("");
+      event.preventDefault();
+      userDateInput = $("#date").val();
+      userDate = userDateInput + "T17:00:00Z";
+      endDate = userDateInput + "T23:59:59Z";
+      queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=50&apikey=${tmAPIKey}`
+      console.log(userDate);
+      console.log(endDate);
+      // pleaseGodLetItWork();
+         
+    $.ajax({
+      url: queryOneURL,
+      method: "GET"
+    }) .done(function(response1){
+  
+  //  console.log(response1._embedded.events[0]);
     for (var i = 0; i < response1._embedded.events.length; i++) {
       searchNumber++
        //event ID
@@ -64,7 +95,7 @@ $.ajax({
       var eventState = response1._embedded.events[i]._embedded.venues[0].state.name;
       //Postal Code
       var eventZip = response1._embedded.events[i]._embedded.venues[0].postalCode;
-
+  
       var eventLocation = {
         venue: venueName,
         coordinates: eventCoordinates,
@@ -73,6 +104,7 @@ $.ajax({
         state: eventState,
         zip: eventZip
       };
+      //console.log('run')
       database.ref(`search/${eventID}`).set ({
         name: eventName,
         eventDate: eventDate,
@@ -81,20 +113,16 @@ $.ajax({
         eventLocation: eventLocation
       })
     }
-
   })
 
-// console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
 
-  
-  
-  
-database.ref(`search`).on("child_added", function(snapshot) {
-      
+  database.ref(`search`).on("child_added", function(snapshot) {
+      //console.log('child')
     if (snapshot.val() == null) {
     return;
 }
   var eventIDSearch = snapshot.val().eventID;
+  //console.log(eventIDSearch)
   var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSearch}/offers.json?apikey=${tmAPIKey}`
     $.ajax({
       url: queryTwoURL,
@@ -117,32 +145,36 @@ database.ref(`search`).on("child_added", function(snapshot) {
     })
     .fail(function(){
       database.ref(`search/${eventIDSearch}`).update({price: "No price!"})
+      
       noPriceObjectArray.push({
         eventName: snapshot.val().name,
         eventDate: snapshot.val().eventDate,
         eventImage: snapshot.val().eventImage
       })
     })
-  database.ref("search").on("child_changed", function() {
-    if (snapshot.val() == null) {
-      return;
-  }
-    if (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
-      //create html
-      eventPriceObjectArray.forEach(function(element){
-        //create content div
-        var priceContent = $("<p>").html(`event name: ${element.eventName} ---- price: ${element.price}`)
-        $(".priced").append(priceContent);
-      })
-      htmladded = true
-    } else {
-      //show loading, finding the best eventss
-    }  
-  })
+
+  // database.ref("search").on("child_changed", function() {
+  //   if (snapshot.val() == null) {
+  //     return;
+  // }
+  //   if (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
+  //     //create html
+  //     eventPriceObjectArray.forEach(function(element){
+  //       //create content div
+  //       var priceContent = $("<p>").html(`event name: ${element.eventName} ---- price: ${element.price}`)
+  //       $(".priced").append(priceContent);
+  //     })
+  //     htmladded = true
+  //   } else {
+  //     //show loading, finding the best eventss
+  //   }  
+  // })
+ 
   });
+ 
 
   $(document).ajaxStop(function() {
-      if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
+      // if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
         //create html
         eventPriceObjectArray.forEach(function(element){
           //create content div
@@ -150,11 +182,22 @@ database.ref(`search`).on("child_added", function(snapshot) {
           $(".priced").append(priceContent);
         })
         htmladded = true
-        } else {
-         console.log("NOOOOO HTMLLLLLL") //show loading, finding the best eventss
+        // } else {
+        //  console.log("NOOOOO HTMLLLLLL") //show loading, finding the best eventss
 
-        }  
+        // }  
   })
+  });
+
+  //===================================================================
+  //===================================================================
+
+  
+// console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
+
+  
+  
+  
 
 
 
