@@ -43,22 +43,55 @@ $.ajax({
 //  console.log(response1._embedded.events[0]);
     for (var i = 0; i < response1._embedded.events.length; i++) {
       searchNumber++
+       //event ID
       var eventID = response1._embedded.events[i].id
       eventIDArray.push(eventID);
+      //event name
       var eventName = response1._embedded.events[i].name;
+      //event date
       var eventDate = response1._embedded.events[i].dates.start.localDate;
+      // event image
       var eventImage = response1._embedded.events[i].images[6].url;
+      //Name of the venue
+      var venueName = response1._embedded.events[i]._embedded.venues[0].name;
+      //Coordinates: location returns an object with longitude and latitude properties
+      var eventCoordinates = response1._embedded.events[i]._embedded.venues[0].location;
+      //address of event
+      var eventAddress = response1._embedded.events[i]._embedded.venues[0].address.line1;
+      //city
+      var eventCity = response1._embedded.events[i]._embedded.venues[0].city.name;
+      //state
+      var eventState = response1._embedded.events[i]._embedded.venues[0].state.name;
+      //Postal Code
+      var eventZip = response1._embedded.events[i]._embedded.venues[0].postalCode;
 
-      // console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
-      database.ref(`search/${eventID}`).set ( {
+      var eventLocation = {
+        venue: venueName,
+        coordinates: eventCoordinates,
+        address: eventAddress,
+        city: eventCity,
+        state: eventState,
+        zip: eventZip
+      };
+      database.ref(`search/${eventID}`).set ({
         name: eventName,
         eventDate: eventDate,
         eventID: eventID,
-        eventImage: eventImage
+        eventImage: eventImage,
+        eventLocation: eventLocation
       })
-    } 
-  }).then(function(){ database.ref(`search`).on("child_added", function(snapshot) {
-      if (snapshot.val() == null) {
+    }
+
+  })
+
+// console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
+
+  
+  
+  
+database.ref(`search`).on("child_added", function(snapshot) {
+      
+    if (snapshot.val() == null) {
     return;
 }
   var eventIDSearch = snapshot.val().eventID;
@@ -90,11 +123,7 @@ $.ajax({
         eventImage: snapshot.val().eventImage
       })
     })
-
-    //html function
-  });
-
-  database.ref("search").child().on("child_changed", function() {
+  database.ref("search").on("child_changed", function() {
     if (snapshot.val() == null) {
       return;
   }
@@ -110,12 +139,7 @@ $.ajax({
       //show loading, finding the best eventss
     }  
   })
-
-
-
-
   });
-})
 
   $(document).ajaxStop(function() {
       if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
