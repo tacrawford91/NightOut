@@ -114,6 +114,8 @@ span {
     margin: 0 auto;
     height: 100px;
     margin-top: 15px;
+    border-radius: 6px;
+    overflow:hidden;
  }
 
  h1 {
@@ -123,3 +125,61 @@ span {
     font-family: Fjalla One;
     color: white;
  }
+
+.img-div {
+    padding:0;
+    height:100%;
+}
+
+.event-image {
+    width:100%;
+    height:100%;
+}
+
+.details-div {
+    background-color:#f8f8f8;
+    height: 100%;
+}
+
+.details-div h1 {
+    color:black;
+    margin: 0;
+}
+
+.event-date {
+    color:grey;
+    font-size:.9em;
+    margin-top:10px;
+    font-family:Lato;
+}
+
+.event-name {
+    margin: 0;
+    width:100%;
+    font-size:1.3em;
+}
+
+.pricing-div {
+    height:100%;
+    text-align:right;
+    background-color: #f8f8f8;
+}
+
+.dollar, .event-price {
+    display: inline;
+    color:rgb(58, 185, 153);
+    font-size: 2em;
+}
+
+.start-as {
+    font-size:1em;
+    margin-top:10px;
+    color:grey;
+    font-family: Fjalla One;
+}
+
+.event-location {
+    font-size: .8em;
+    color: #FD5739;
+    font-family: Fjalla One;
+}
