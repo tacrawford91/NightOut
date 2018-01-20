@@ -4,6 +4,7 @@ html, body, .main-page {
 
 container {
     min-height: 100%;
+    width: 100%;
 }
 
 .container {
@@ -16,7 +17,6 @@ container {
     right: 0;
     bottom: 0;
     min-width: 100%;
-    min-height: 100%;
     width: auto;
     height: auto;
     z-index: -100;
@@ -97,9 +97,29 @@ span {
 }
 
 #page-results {
-    background-color: white;
+    background-color: grey;
     width: 100%;
     min-width: 100%;
     height: 1000px;
     margin-top: 300px;
+ }
+ 
+ .results-div {
+    margin-top: 20px;
+ }
+ 
+ .result-item {
+    background-color: red;
+    width: 60%;
+    margin: 0 auto;
+    height: 100px;
+    margin-top: 15px;
+ }
+
+ h1 {
+    width: 60%;
+    margin: 0 auto;
+    font-size: 20px;
+    font-family: Fjalla One;
+    color: white;
  }
