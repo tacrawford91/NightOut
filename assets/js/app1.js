@@ -1,5 +1,18 @@
+{/* <div id="map"></div>
+
+<style>
+  #map {
+      height: 400px;
+      width: 100%;
+  }
+</style> */}
+
+//===================================================================
+//===================================================================
+
+
 // Initialize Firebase
-//REAL PROJECT FIREBASE - Troy Set
+//REAL PROJECT FIREBASE
 // var config = {
 //     apiKey: "AIzaSyBMPRyBKIBX_3MQAF0oFP8tUlOw0nU0Yn4",
 //     authDomain: "project1-d2ee8.firebaseapp.com",
@@ -21,15 +34,33 @@ var config = {
 
   //set db varible 
   var database = firebase.database();
+  // //set up query url
+  // var userCity = "chicago";
+  // var userDate ="2018-01-20T15:00:00Z"
+  // var endDate = "2018-01-21T15:00:00Z"
+  // var budget = 100;
+
   //set up query url
-  var userCity = "chicago";
-  var userDate ="2018-01-20T15:00:00Z"
-  var endDate = "2018-01-21T15:00:00Z"
-  var budget = 100;
+  var userCity = $("#zip").val();
+  var userDate = $("#date").val();
+  var budget = $("#budget").val();
+
+
+  $(".searchBtn").on("click", function(event){
+    event.preventDefault();
+    console.log(userCity);
+    console.log(userDate);
+    console.log(budget);
+  });
+
   var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
-//wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
-//azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
-  var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=20&apikey=${tmAPIKey}`
+  var tmAPIKey2 = "hcJu0dpfx8cQR1PDzfetBNqxUXE3otpA";
+  //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
+  //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
+  // hcJu0dpfx8cQR1PDzfetBNqxUXE3otpA - Shawn api KEY #2
+  // var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=2&apikey=${tmAPIKey2}`
+  var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&size=2&apikey=${tmAPIKey2}`
+
   var eventID =  "vv178ZfYGkn1XoB7";
   var searchNumber = 0;
   var eventIDArray = [];
@@ -52,33 +83,20 @@ $.ajax({
       eventIDArray.push(eventID);
       var eventName = response1._embedded.events[i].name;
       var eventDate = response1._embedded.events[i].dates.start.localDate;
-      //===================================================================
-      //===================================================================
+      
       //Name of the venue
       var venueName = response1._embedded.events[i]._embedded.venues[0].name;
-      console.log(venueName);
-
       //Coordinates: location returns an object with longitude and latitude properties
       var eventCoordinates = response1._embedded.events[i]._embedded.venues[0].location;
-      console.log(eventCoordinates);
-
       //address of event
       var eventAddress = response1._embedded.events[i]._embedded.venues[0].address.line1;
-      console.log(eventAddress);
-
       //city
       var eventCity = response1._embedded.events[i]._embedded.venues[0].city.name;
-      console.log(eventCity);
-
       //state
       var eventState = response1._embedded.events[i]._embedded.venues[0].state.name;
-      console.log(eventState);
-
       //Postal Code
       var eventZip = response1._embedded.events[i]._embedded.venues[0].postalCode;
-      console.log(eventZip);
-      //===================================================================
-      //===================================================================
+      
 
       var eventLocation = {
         venue: venueName,
@@ -104,7 +122,7 @@ $.ajax({
     return;
 }
   var eventIDSearch = snapshot.val().eventID;
-  var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSearch}/offers.json?apikey=${tmAPIKey}`
+  var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSearch}/offers.json?apikey=${tmAPIKey2}`
 
     $.ajax({
       url: queryTwoURL,
@@ -137,8 +155,28 @@ $.ajax({
 // $("#budget-input")
 // $("#zip-input")
 
-//===================================================================
-//===================================================================
+
+
+
+var query = database.ref("search").orderByKey();
+query.once("value")
+  .then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      // key will be "ada" the first time and "alan" the second time
+      var key = childSnapshot.key;
+      // childData will be the actual contents of the child
+      var childData = childSnapshot.val();
+      console.log(key);
+      console.log(childData);
+
+  });
+});
+
+
+
+
+
+
 //Google Maps API Key -Shawn
 // AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU
  
@@ -152,6 +190,7 @@ function initMap() {
 
   var marker = new google.maps.Marker({
     position: {lat: 41.88124412, lng: -87.67427375},
+    // position: {lat: 41.8781, lng: -87.6298},
     map: map 
   })
 };
@@ -160,4 +199,15 @@ function initMap() {
 // "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU"
 
 //Reverse Geocoding link w/ API key (coordinates --> address)
-// "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU"
+// "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY"
+
+
+
+//Each generated panel in the results page should have its own unique identifier 
+//either an ID or Class. On clicking each panel, it will open up and show the content
+//price, address, venue, link to ticketmaster
+//On clicking the panel, a function will fire that generates the google map from their api
+//that populates the unique panels latitude and longitude coordinates
+
+
+  
