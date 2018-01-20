@@ -108,13 +108,13 @@ span {
     margin-top: 20px;
  }
  
+#accordion {
+    border-radius:6px;
+}
+
  .result-item {
-    background-color: red;
-    width: 60%;
+    background-color: #f8f8f8;
     margin: 0 auto;
-    height: 100px;
-    margin-top: 15px;
-    border-radius: 6px;
     overflow:hidden;
  }
 
