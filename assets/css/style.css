@@ -194,7 +194,13 @@ span {
     margin: 0px;
 }
 
-#map {
-    height: 400px;
-    width: 100%;
+.map-button {
+    cursor:pointer;
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s; 
+}
+  
+#google-map {
+    height: 350px;
+    width:100%;
 }
