@@ -193,3 +193,8 @@ span {
     padding-top: 60px;
     margin: 0px;
 }
+
+#map {
+    height: 400px;
+    width: 100%;
+}
