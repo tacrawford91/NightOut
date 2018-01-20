@@ -180,7 +180,16 @@ span {
 
 .event-location {
     font-size: .8em;
-    color: #FD5739;
+    color: #FD5739 ;
     font-family: Fjalla One;
-    padding-top:30px;
+    padding-top: 45px;
+    margin: 0px;
+}
+
+.event-click {
+    font-size: .9em;
+    color: grey;
+    font-family: Lato;
+    padding-top: 60px;
+    margin: 0px;
 }
