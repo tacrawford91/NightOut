@@ -11,19 +11,21 @@ var config = {
 
   //set db varible 
   var database = firebase.database();
-  //set up query url
-  var userCity = "chicago";
-  // var userDate ="2018-01-27T15:00:00Z"
+  //set up query1url
+  var userCity;
   var userDate;
   var endDate;
-  var budget = 100;
+  var userBudget = 100;
 
   
   var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
   //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
   //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
+  
   var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=20&apikey=${tmAPIKey}`
-  var eventID =  "vv178ZfYGkn1XoB7";
+
+
+
   var searchNumber = 0;
   var eventIDArray = [];
   var eventPriceArray = [];
@@ -55,12 +57,16 @@ var config = {
       noPriceObjectArray = [];
       eventPriceCounter = 0;
       htmladded = false 
-
       database.ref().set("");
       event.preventDefault();
+
+      //Grabbing User Input
+      userCity = $("#zip").val().trim();
       userDateInput = $("#date").val();
       userDate = userDateInput + "T17:00:00Z";
       endDate = userDateInput + "T23:59:59Z";
+      userBudget = Number($("#budget").val())
+
       queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=50&apikey=${tmAPIKey}`
       console.log(userDate);
       console.log(endDate);
@@ -177,9 +183,54 @@ var config = {
       // if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
         //create html
         eventPriceObjectArray.forEach(function(element){
-          //create content div
-          var priceContent = $("<p>").html(`<img src="${element.eventImage}"><h1>---- event name: ${element.eventName} ---- price: ${element.price} --</h1)`)
-          $(".priced").append(priceContent);
+          // if (element.price < userBudget) {
+          //Build Html element
+          //contain col
+          var containingDiv = $("<div>").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12")
+          //accordian
+          var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", "collapse").attr("data-target", "#map").attr("id","accordion")
+          //panel div
+          var panelDiv = $("<div>").addClass("panel panel-default")
+          //panel-headeing
+          var panelHeadingDiv = $("<div>").addClass("panel-heading");
+          //panel title
+          var panelTitleDiv = $("<h4>").addClass("panel-title");
+          // a tag
+          var aTag = $("<a>").addClass("map-button").attr("data-toggle", "collaspe").attr("data-target", "#map")
+          //row div
+          var rowDiv = $("<div>").addClass("row result-item");
+          //create icon
+          var icon = $("i").addClass("fa fa-chevron-down fa-spacing");
+          //create image section
+          var imgDiv = $("<div>").addClass("col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div").append($("<img>").attr("src",element.eventImage).addClass("event-image"));
+          //event detais div
+          var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div")
+          var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
+          var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
+          var click_h4=$("<h4>").html("Click Event for Map Details").addClass("event-click");    
+          detailsDiv.append(date_h3,name_h1,click_h4);
+          //pricing and location div
+          var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div")
+          var start_h3 = $("<h3>").html("Starting as low as").addClass("start-as");
+          var dollar_h1 = $("<h1>").html("$").addClass("dollar");
+          var price_h1 = $("<h1>").html(element.price).addClass("event-price");
+          pricingDiv.append(start_h3,dollar_h1,price_h1);
+          // add all to row div
+          rowDiv.append(imgDiv,detailsDiv,pricingDiv);
+          //add  result item to aTag
+          aTag.append(rowDiv,icon);
+          //aTag to title
+          panelTitleDiv.append(aTag);
+          //title to heading
+          panelHeadingDiv.append(panelTitleDiv);
+          // heading to panel
+          panelDiv.append(panelHeadingDiv);
+          //panel to accorion
+          accordion.append(panelDiv);
+          //accordion to continaingDiv
+          containingDiv.append(accordion);
+          //add row to html containter
+          $(".results-div").append(containingDiv);
         })
         htmladded = true
         // } else {
@@ -193,17 +244,4 @@ var config = {
   //===================================================================
 
   
-// console.log(response1._embedded.events[i].name + response1._embedded.events[i].dates.start.localDate + "      " + eventID)
 
-  
-  
-  
-
-
-
-
-//user inputs
-// $("#budget-input")
-// $("#date-input")
-// $("#budget-input")
-// $("#zip-input")
