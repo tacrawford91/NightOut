@@ -85,7 +85,7 @@ function showPosition(position) {
 }
 
 
-$(".searchButton").on("click", function() { 
+$(".searchBtn").on("click", function() { 
   database.ref(`search`).off("child_added")
 
   searchNumber = 0;
@@ -120,7 +120,9 @@ $.ajax({
       //event name
       var eventName = response1._embedded.events[i].name;
       //event date
-      var eventDate = response1._embedded.events[i].dates.start.localDate;
+      var eventDate = response1._embedded.events[i].dates.start.dateTime;
+      //update date format using moment.js
+      var eventDate = moment(eventDate).format("MMMM Do, YYYY");
       // event image
       var eventImage = response1._embedded.events[i].images[6].url;
       //Name of the venue
