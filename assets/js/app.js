@@ -84,7 +84,9 @@ function showPosition(position) {
   console.log("THE USER LOCATION IS " + userLatLon);
 }
 
-
+//Hide loading animation
+$(".loadingRow").hide();
+//Listen for search
 $(".searchBtn").on("click", function() {
   console.log("I WAS CLICKED") 
   database.ref(`search`).off("child_added")
@@ -103,8 +105,12 @@ $(".searchBtn").on("click", function() {
   userDate = userDateInput + "T17:00:00Z";
   endDate = userDateInput + "T23:59:59Z";
   userBudget = Number($("#budget").val())
+  //Show Loading Animation
+  $(".loadingRow").show();
+  //empty previous results
+  $(".results-div").html("");
 
-$.ajax({
+$.ajax({     
   type:"GET",
   url:`https://app.ticketmaster.com/discovery/v2/events.json?latlong=${userLatLon}&radius=50&unit=miles&size=50&startDateTime=${userDate}&endDateTime=${endDate}&apikey=${tmAPIKey}`,
   async:true,
@@ -218,10 +224,12 @@ var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSear
 })
 $(document).ajaxStop(function() {
   // if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
+    //Hide loading animation 
+    $(".loadingRow").hide();
     //create html
     var counter = 0;
     eventPriceObjectArray.forEach(function(element){
-      // if (element.price < userBudget) {
+      if (element.price < userBudget) {
       //Build Html element
       //contain col
       var containingDiv = $("<div>").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12")
@@ -279,9 +287,10 @@ $(document).ajaxStop(function() {
 
 
       counter++
-    })
+    }
     htmladded = true
-    // } else {
+    })
+    //else {
     //  console.log("NOOOOO HTMLLLLLL") //show loading, finding the best eventss
 
     // }  
