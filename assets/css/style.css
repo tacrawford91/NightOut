@@ -1,3 +1,4 @@
+/* Format body and containers */
 html, body, .main-page {
     height: 100%;
 }
@@ -12,6 +13,8 @@ container {
     padding-right: 0px;
 }
 
+
+/* Place video in background */
 #video-background {
     position: fixed;
     right: 0;
@@ -22,6 +25,8 @@ container {
     z-index: -100;
   }
 
+
+/* Style for Logo, title and Tagline on main landing page */
 .icon {
     margin-top: 160px;
     height: 150px;
@@ -40,34 +45,18 @@ container {
     font-size: 1.1em;
 }
 
-#budget, #zip, #date {
+
+/* Format the input form */
+#budget, #date {
     width: 160px;
     height: 40px;
     float: left;
     margin: 5px;
-    border-radius: 0 !important;
+    border-radius: 0;
 }
 
-select {
-    width: 100px;
-    height: 40px;
-    border-radius: 0px;
-    background-color: white;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
-    padding-left:13px;
-    padding-bottom:2px;
-    color:grey;
-    border: 1px solid #ccc;
-    float: left;
-    margin-left: 10px;
-    margin-top: 15px;
-}
 
-.state-main {
-    margin:5px;
-}
-
+/* Format the search buttom */
 .btn-primary, .btn-results {
     width: 100px;
     height: 40px;
@@ -84,16 +73,22 @@ select {
     margin-left: 10px;
 }
 
+
+/* Center the input form and search button on the main landing page */
 .form-group {
-    left: 190px;
+    left: 345px;
 }
 
+
+/* Format the navigation bar on the secondary page */
 .navbar-default {
     height: 80px;
     width: auto;
     min-width: 100%;
 }
 
+
+/* Add logo and title on the navigation bar on the secondary page */
 .icon2 {
     height:50px !important;
     width: auto !important;
@@ -108,13 +103,15 @@ span {
 }
 
 .navbar-brand {
-    padding: 0px !important;
-    margin-top: 15px !important;
-    margin-bottom: 15px !important;
+    padding: 0px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
+
+/* Format the input form on the secondary page */
 #budget-nav, #zip-nav, #date-nav, #btn-nav {
-    border-radius: 0 !important;
+    border-radius: 0;
     margin-top: 15px;
     margin-left: 10px;
     margin-bottom: 15px;
@@ -123,6 +120,7 @@ span {
     float:left;
 }
 
+/* Change secondary page background to grey */
 #page-results {
     background-color: grey;
     width: 100%;
@@ -132,6 +130,8 @@ span {
     overflow:hidden;
  }
  
+
+ /* Format the results div */
  .results-div {
     margin-top: 20px;
  }
@@ -141,13 +141,13 @@ span {
     margin-top: 10px;
 }
 
- .result-item {
+.result-item {
     background-color: #f8f8f8;
     margin: 0 auto;
     overflow:hidden;
  }
 
- h1 {
+h1 {
     width: 60%;
     margin: 0 auto;
     font-size: 20px;
@@ -155,6 +155,8 @@ span {
     color: white;
  }
 
+
+ /* Format the Event Image and Event Image area */
 .img-div {
     padding:0;
     height:100%;
@@ -165,6 +167,8 @@ span {
     height:100%;
 }
 
+
+ /* Format the Event Title, Date and Time area */
 .details-div {
     background-color:#f8f8f8;
     height: 100%;
@@ -188,6 +192,15 @@ span {
     font-size:1.3em;
 }
 
+.event-time {
+    font-size: .9em;
+    color: grey;
+    font-family: Lato;
+    margin-top:10px;
+ }
+
+
+ /* Format the Event Pricing and Event Location area */
 .pricing-div {
     height:100%;
     text-align:right;
@@ -215,6 +228,8 @@ span {
     margin: 0px;
 }
 
+
+/* Format the Click Here for Map Details area */
 .event-click {
     font-size: .9em;
     color: grey;
@@ -228,8 +243,34 @@ span {
     transition: all 0.7s;
     -webkit-transition: all 0.7s; 
 }
-  
+
+
+/* Format the Google Map once the Accordion Expands */
 #google-map {
     height: 350px;
     width:100%;
 }
+
+
+
+/* Add the below style if we get to adding City and State options */
+
+/* select {
+    width: 100px;
+    height: 40px;
+    border-radius: 0px;
+    background-color: white;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    padding-left:13px;
+    padding-bottom:2px;
+    color:grey;
+    border: 1px solid #ccc;
+    float: left;
+    margin-left: 10px;
+    margin-top: 15px;
+} */
+
+/* .state-main {
+    margin:5px;
+} */
