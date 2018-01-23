@@ -18,7 +18,7 @@ var config = {
   var userBudget = 100;
 
   
-  var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
+  var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
   //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
   //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
   
@@ -131,6 +131,8 @@ $.ajax({
       //event time
       var eventTime = response1._embedded.events[i].dates.start.localTime;
       var eventTime = moment(eventTime, "HH:mm:ss").format("hh:mm A");
+      //event distance
+      var eventDistance = response1._embedded.events[i].distance
       // event image
       var eventImage = response1._embedded.events[i].images[6].url;
       //Name of the venue
@@ -167,7 +169,8 @@ $.ajax({
         eventLongitude: eventLongitude,
         eventLatitude: eventLatitude,
         venueName: venueName,
-        eventTime: eventTime
+        eventTime: eventTime,
+        eventDistance: eventDistance
       })
     }
   })
@@ -197,7 +200,8 @@ var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSear
       eventTime: snapshot.val().eventTime,
       eventLongitude: snapshot.val().eventLongitude,
       eventLatitude: snapshot.val().eventLatitude,
-      eventAddress: snapshot.val().eventAddress
+      eventAddress: snapshot.val().eventAddress,
+      eventDistance: snapshot.val().eventDistance
      
     })
     eventPriceCounter++
@@ -217,8 +221,8 @@ var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSear
       eventTime: snapshot.val().eventTime,
       eventLongitude: snapshot.val().eventLongitude,
       eventLatitude: snapshot.val().eventLatitude,
-      eventAddress: snapshot.val().eventAddress
-      
+      eventAddress: snapshot.val().eventAddress,
+      eventDistance: snapshot.val().eventDistance
     })
   })
 })
@@ -258,9 +262,10 @@ $(document).ajaxStop(function() {
       var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div")
       var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
+      var distance_h1 = $("<h1>").html(`Distance: ${element.eventDistance} miles away`).addClass("event-distance");
       var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
       var click_h4=$("<h4>").html("Click Event for Map Details").addClass("event-click");    
-      detailsDiv.append(date_h3,name_h1,time_h3,click_h4);
+      detailsDiv.append(date_h3,name_h1,distance_h1,time_h3,click_h4);
       //pricing and location div
       var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div")
       var start_h3 = $("<h3>").html("Starting as low as").addClass("start-as");
