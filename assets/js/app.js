@@ -120,9 +120,11 @@ $.ajax({
       //event name
       var eventName = response1._embedded.events[i].name;
       //event date
-      var eventDate = response1._embedded.events[i].dates.start.localDate;
+      var eventDate = response1._embedded.events[i].dates.start.dateTime;
+      var eventDate = moment(eventDate).format("MMMM Do, YYYY");
       //event time
       var eventTime = response1._embedded.events[i].dates.start.localTime;
+      var eventTime = moment(eventTime, "HH:mm:ss").format("hh:mm A");
       // event image
       var eventImage = response1._embedded.events[i].images[6].url;
       //Name of the venue
@@ -291,41 +293,41 @@ $(document).ajaxStop(function() {
   //===================================================================
  
 
-var latitude = $(`#google-map`).data('latitude');
-var longitude = $(`#google-map`).data('longitude');
-function initialize_map() {
-  var myLatlng = new google.maps.LatLng(latitude,longitude);
-  var mapOptions = {
-    zoom: 14,
-    scrollwheel: false,
-    disableDefaultUI: true,
-    center: myLatlng
-  };
-  var map = new google.maps.Map(document.getElementById(`google-map`), mapOptions);
-  var contentString = '';
-  var infowindow = new google.maps.InfoWindow({
-    content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
-  });
+// var latitude = $(`#google-map`).data('latitude');
+// var longitude = $(`#google-map`).data('longitude');
+// function initialize_map() {
+//   var myLatlng = new google.maps.LatLng(latitude,longitude);
+//   var mapOptions = {
+//     zoom: 14,
+//     scrollwheel: false,
+//     disableDefaultUI: true,
+//     center: myLatlng
+//   };
+//   var map = new google.maps.Map(document.getElementById(`google-map`), mapOptions);
+//   var contentString = '';
+//   var infowindow = new google.maps.InfoWindow({
+//     content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
+//   });
   
-  var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map
-  });
+//   var marker = new google.maps.Marker({
+//     position: myLatlng,
+//     map: map
+//   });
   
   
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
-  });
-}
+//   google.maps.event.addListener(marker, 'click', function() {
+//     infowindow.open(map,marker);
+//   });
+// }
 
-  initialize_map();
-  $(`#map${counter}`).on('hidden.bs.collapse', function () {
-    initialize_map();
-  })
-  $(`#map${counter}`).on('shown.bs.collapse', function () {
-    initialize_map(); 
-  })
+//   initialize_map();
+//   $(`#map${counter}`).on('hidden.bs.collapse', function () {
+//     initialize_map();
+//   })
+//   $(`#map${counter}`).on('shown.bs.collapse', function () {
+//     initialize_map(); 
+//   })
 
-  google.maps.event.addDomListener(window, 'resize', function() {
+//   google.maps.event.addDomListener(window, 'resize', function() {
  
-  });
+//   });
