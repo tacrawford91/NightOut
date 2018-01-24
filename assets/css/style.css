@@ -1,36 +1,54 @@
 /* Format body and containers */
-html, body, .main-page {
+html, body {
     height: 100%;
+    width:100%;
+    margin: 0;
 }
 
-container {
-    min-height: 100%;
-    width: 100%;
-}
-
-.container {
+.container-fluid, .container {
     padding-left: 0px;
     padding-right: 0px;
+    border-radius:0px;
 }
 
-
 /* Place video in background */
-#video-background {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    width: auto;
-    height: auto;
+.video-holder {
+    height:100vh;
+    width:100%;
     z-index: -100;
-  }
+    overflow:hidden;
+}
+#video-background {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+    opacity:.5;
+}
+
+video::-webkit-media-controls {
+    display:none !important;
+}
 
 
 /* Style for Logo, title and Tagline on main landing page */
+.main-page {
+    position:absolute;
+    width:100%;
+    z-index:100;
+    margin: 0 auto;
+}
+
+.center-block {
+    margin-top:20vh;
+}
+
 .icon {
-    margin-top: 160px;
     height: 150px;
     width: auto;
+    margin:0 auto;
+    z-index: 1;
+    display:block;
 }
 
 .title, .navbar-brand {
@@ -39,14 +57,32 @@ container {
     color: white;
 }
 
+.title {
+    display:block;
+    color:white;
+    margin-top: 70px;
+    z-index: 2;
+    top:50%;
+    left:45%;
+    transform:translateY(-50%);
+    width: 100%;
+    text-align: center;
+}
+
 .tagline {
     font-family: Cantarell;
     color: white;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    margin-top:0px
 }
 
 
 /* Format the input form */
+#main-search {
+    width: 450px;
+    margin: 0 auto;
+}
+
 #budget, #date {
     width: 160px;
     height: 40px;
@@ -68,17 +104,10 @@ container {
     color: white;
 }
 
-.search-nav {
-    margin-top:15px;
-    margin-left: 10px;
-}
-
-
 /* Center the input form and search button on the main landing page */
 .form-group {
-    left: 345px;
+    margin: 0 auto;
 }
-
 
 /* Format the navigation bar on the secondary page */
 .navbar-default {
@@ -87,13 +116,29 @@ container {
     min-width: 100%;
 }
 
+.navbar {
+    z-index:100;
+    border-radius: 0;
+}
+
+.navbar-right {
+   margin-right: 0px;
+   margin-top:15px;
+}
+
+.navbar-brand {
+    padding: 0px;
+    margin-top: 12px;
+    margin-bottom: 15px;
+}
 
 /* Add logo and title on the navigation bar on the secondary page */
 .icon2 {
     height:50px !important;
     width: auto !important;
     display:inline-block !important;
-    margin-left: 30px;
+    margin-left: 47px;
+    margin-top:0px;
     margin-right: 10px;
 }
 
@@ -102,38 +147,35 @@ span {
     font-size: 35px;
 }
 
-.navbar-brand {
-    padding: 0px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-
 /* Format the input form on the secondary page */
-#budget-nav, #zip-nav, #date-nav, #btn-nav {
-    border-radius: 0;
-    margin-top: 15px;
-    margin-left: 10px;
-    margin-bottom: 15px;
+#budget-nav, #date-nav, #btn-nav {
     width: 160px;
     height: 40px;
-    float:left;
+    float: left;
+    margin: 5px;
+    border-radius: 0;
+}
+
+.form-control {
+    width: 160px;
+    height: 40px;
+    float: left;
+    margin: 5px;
+    border-radius: 0;
 }
 
 /* Change secondary page background to grey */
 #page-results {
-    background-color: grey;
     width: 100%;
-    min-width: 100%;
-    height: 2000px;
-    margin-top: 300px;
- }
- 
+    height: 100vh;
+    /* margin-top: 45px; */
+    z-index:100;
+}
 
- /* Format the results div */
- .results-div {
-    margin-top: 20px;
- }
+/* Format the results div */
+.results-div {
+    margin: 10px 20px;
+}
  
 #accordion {
     border-radius:6px;
