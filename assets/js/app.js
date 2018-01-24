@@ -18,14 +18,15 @@ var config = {
   var userBudget = 100;
 
   
-  var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
+  var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
   //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
   //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
   
   var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=20&apikey=${tmAPIKey}`
 
-
   var counter = 0;
+  var latitude;
+  var longitude;
   var searchNumber = 0;
   var eventIDArray = [];
   var eventPriceArray = [];
@@ -33,7 +34,7 @@ var config = {
   var noPriceObjectArray = [];
   var eventPriceCounter = 0;
   var htmladded = false 
-  
+  var x;
   
   database.ref().set("");
 
@@ -53,12 +54,14 @@ var config = {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
       //browswer does not support location 
-        var x = document.getElementById("location");
+        x = document.getElementById("location");
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
 }
 
 function showError(error) {
+  console.log('error', error)
+  var x = document.getElementById("location");
   switch(error.code) {
       case error.PERMISSION_DENIED:
       //Show user denied location assistance.
@@ -160,7 +163,7 @@ $.ajax({
         state: eventState,
         zip: eventZip
       };
-      database.ref(`search/${eventID}`).set ({
+      database.ref(`search/${eventID}`).set({
         name: eventName,
         eventDate: eventDate,
         eventID: eventID,
@@ -176,39 +179,39 @@ $.ajax({
   })
   database.ref(`search`).on("child_added", function(snapshot) {
     //console.log('child')
-  if (snapshot.val() == null) {
-  return;
-}
-var eventIDSearch = snapshot.val().eventID;
-//console.log(eventIDSearch)
-var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSearch}/offers.json?apikey=${tmAPIKey}`
-  $.ajax({
-    url: queryTwoURL,
-    method: "GET"
-  }) .done(function(response2){
-    //grab good responses and update db price, push into priced array and sort.
-    database.ref(`search/${eventIDSearch}`).update({price:Number(response2.prices.data[0].attributes.value)})
+    if (snapshot.val() == null) {
+      return;
+    }
+    var eventIDSearch = snapshot.val().eventID;
+    //console.log(eventIDSearch)
+    var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSearch}/offers.json?apikey=${tmAPIKey}`
+      $.ajax({
+        url: queryTwoURL,
+        method: "GET"
+      }) .done(function(response2){
+        //grab good responses and update db price, push into priced array and sort.
+        database.ref(`search/${eventIDSearch}`).update({price:Number(response2.prices.data[0].attributes.value)})
 
 
-    eventPriceObjectArray.push({
-      eventName: snapshot.val().name,
-      eventDate: snapshot.val().eventDate,
-      price: Number(response2.prices.data[0].attributes.value),
-      eventImage: snapshot.val().eventImage,
-      venueName: snapshot.val().venueName,
-      eventCoordinates: snapshot.val().eventCoordinates,
-      eventTime: snapshot.val().eventTime,
-      eventLongitude: snapshot.val().eventLongitude,
-      eventLatitude: snapshot.val().eventLatitude,
-      eventAddress: snapshot.val().eventAddress,
-      eventDistance: snapshot.val().eventDistance
-     
-    })
-    eventPriceCounter++
-    eventPriceObjectArray.sort(function(a,b) {
-      return a.price-b.price
-    })
-  })
+        eventPriceObjectArray.push({
+          eventName: snapshot.val().name,
+          eventDate: snapshot.val().eventDate,
+          price: Number(response2.prices.data[0].attributes.value),
+          eventImage: snapshot.val().eventImage,
+          venueName: snapshot.val().venueName,
+          eventCoordinates: snapshot.val().eventCoordinates,
+          eventTime: snapshot.val().eventTime,
+          eventLongitude: snapshot.val().eventLongitude,
+          eventLatitude: snapshot.val().eventLatitude,
+          eventAddress: snapshot.val().eventAddress,
+          eventDistance: snapshot.val().eventDistance
+        
+        })
+        eventPriceCounter++
+        eventPriceObjectArray.sort(function(a,b) {
+          return a.price-b.price
+        })
+      })
   .fail(function(){
     database.ref(`search/${eventIDSearch}`).update({price: "No price!"})
     
@@ -230,6 +233,7 @@ $(document).ajaxStop(function() {
   // if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
     //Hide loading animation 
     $(".loadingRow").hide();
+
     //create html
     eventPriceObjectArray.forEach(function(element){
       if (element.price < userBudget) {
@@ -237,13 +241,13 @@ $(document).ajaxStop(function() {
       //contain col
       var containingDiv = $("<div>").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12");
       //accordion
-      var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", `collapse`).attr("data-target", `.map${counter}`).attr("id",`accordion`);
+      var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", `collapse`).attr("data-target", `.map${counter.toString()}`).attr("id",`accordion`);
       //panel panel-default
       var panelDiv = $("<div>").addClass("panel panel-default");
       //panel-heading
       var panelHeadingDiv = $("<div>").addClass("panel-heading");
       //panel-title
-      var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `#collapse${counter}`);
+      var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`)
       //row result-item
       var rowDiv = $("<div>").addClass("row result-item");
 
@@ -271,10 +275,19 @@ $(document).ajaxStop(function() {
       var iFrame = $("<i>").addClass("fa fa-chevron-down fa-spacing");
       
       // create map stuff
-      var map_div = $("<div>").attr("id",`collapse${counter}`).addClass(`panel-collapse collapse`);
+      var map_div = $("<div>")
+        .attr("id",`map${counter.toString()}`)
+        .addClass(`panel-collapse collapse collapse${counter.toString()}`);
+        
       //inside of map div goes
       var panelBody = $("<div>").attr("class", "panel-body");
-      var googlemap_div = $("<div>").attr("id", "google-map").attr("class",`marker${count}`).attr("data-latitude", element.eventLatitude).attr("data-longitude", element.eventLongitude);
+
+      var googlemap_div = $("<div>")
+        .attr("id", `google-map${counter.toString()}`)
+        .attr("class",`gmap marker${counter.toString()}`)
+        .attr("data-latitude", element.eventLatitude)
+        .attr("data-longitude", element.eventLongitude);
+
       panelBody.append(googlemap_div);
       map_div.append(panelBody);
       
@@ -297,8 +310,15 @@ $(document).ajaxStop(function() {
       // //add row to html containter
       $(".results-div").append(containingDiv);
 
-
+      // Add +1
       counter++
+      
+
+      // Google Maps
+      latitude = element.eventLatitude;
+      longitude = element.eventLongitude;
+      
+      console.log(latitude, longitude);
     }
     htmladded = true
     })
@@ -308,47 +328,59 @@ $(document).ajaxStop(function() {
     // }  
 })
 });
-
+  console.log(counter)
   //===================================================================
    // GOOGLE MAP ITERATION
   //===================================================================
  
+  function initialize_map(id = 0) {
+    var container = document.getElementById(`google-map${id.toString()}`)
+    console.log('container', container, `google-map${id.toString()}`, id)
+    if (!container) return
 
-var latitude = $(`.marker${counter}`).data('latitude');
-var longitude = $(`.marker${counter}`).data('longitude');
-function initialize_map() {
-  var myLatlng = new google.maps.LatLng(latitude,longitude);
-  var mapOptions = {
-    zoom: 14,
-    scrollwheel: false,
-    disableDefaultUI: true,
-    center: myLatlng
+    var myLatlng = new google.maps.LatLng(latitude,longitude);
+    var mapOptions = {
+      zoom: 14,
+      scrollwheel: false,
+      disableDefaultUI: true,
+      center: myLatlng
+    };
+    
+    var map = new google.maps.Map(container, mapOptions);
+    var contentString = '';
+    // var infowindow = new google.maps.InfoWindow({
+    //   content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
+    // });
+    
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map
+    });
   };
-  var map = new google.maps.Map(document.getElementById(`google-map`), mapOptions);
-  var contentString = '';
-  var infowindow = new google.maps.InfoWindow({
-    content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
-  });
+    
+    // initialize_map();
+    // $(`.panel-collapse`).on('hidden.bs.collapse', function () {
+    //   initialize_map();
+    // })
+    
+    // $(`.panel-collapse`).on('shown.bs.collapse', function () {
+    //   initialize_map(); 
+    // })
   
-  var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map
-  });
-  
-  
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
-  });
-}
+    $(document).on('click', '.panel-title', function () {
+      console.log('clicked this', this, $(this).attr('data-counter'))
+      initialize_map($(this).attr('data-counter')); 
+    })
 
-  initialize_map();
-  $(`#map${counter}`).on('hidden.bs.collapse', function () {
-    initialize_map();
-  })
-  $(`#map${counter}`).on('shown.bs.collapse', function () {
-    initialize_map(); 
-  })
+    // google.maps.event.addDomListener(aTag, 'click', function() {
+    //   initialize_map();
+    // });
 
-  google.maps.event.addDomListener(window, 'resize', function() {
+    
+    // google.maps.event.addListener(marker, 'click', function() {
+    //   infowindow.open(map,marker);
+    // });
+
  
-  });
+
+
