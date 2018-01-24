@@ -256,7 +256,7 @@ $(document).ajaxStop(function() {
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
       var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
       detailsDiv.append(date_h3,name_h1,time_h3);
-      
+
       //pricing and location div
       var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
       var start_h3 = $("<h3>").html("Starting as low as").addClass("start-as");
