@@ -18,7 +18,7 @@ var endDate;
 var userBudget = 100;
 
 
-var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
+var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
 //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
 //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
 
@@ -47,6 +47,7 @@ database.ref().set("");
 //===================================================================
 
 var userLatLon;
+var myLatlng; 
 
 getLocation()
 function getLocation() {
@@ -257,7 +258,7 @@ $(document).ajaxStop(function() {
     //panel-heading
     var panelHeadingDiv = $("<div>").addClass("panel-heading");
     //panel-title
-    var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`)
+    var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`).attr("longitude", element.eventLongitude).attr("latitude", element.eventLatitude);
     //row result-item
     var rowDiv = $("<div>").addClass("row result-item");
 
@@ -324,11 +325,9 @@ $(document).ajaxStop(function() {
     counter++
     
 
-    // Google Maps
-    latitude = element.eventLatitude;
-    longitude = element.eventLongitude;
-    
-    console.log(latitude, longitude);
+    // // Google Maps
+    // latitude = element.eventLatitude;
+    // longitude = element.eventLongitude;
   }
   htmladded = true
   })
@@ -348,14 +347,14 @@ function initialize_map(id = 0) {
   console.log('container', container, `google-map${id.toString()}`, id)
   if (!container) return
 
-  var myLatlng = new google.maps.LatLng(latitude,longitude);
+  myLatlng = new google.maps.LatLng(latitude,longitude);
   var mapOptions = {
     zoom: 14,
     scrollwheel: false,
     disableDefaultUI: true,
     center: myLatlng
   };
-  
+  console.log("my latlng is  ---- " + myLatlng)
   var map = new google.maps.Map(container, mapOptions);
   var contentString = '';
   // var infowindow = new google.maps.InfoWindow({
@@ -368,29 +367,14 @@ function initialize_map(id = 0) {
   });
 };
   
-  // initialize_map();
-  // $(`.panel-collapse`).on('hidden.bs.collapse', function () {
-  //   initialize_map();
-  // })
-  
-  // $(`.panel-collapse`).on('shown.bs.collapse', function () {
-  //   initialize_map(); 
-  // })
 
   $(document).on('click', '.panel-title', function () {
+    latitude = Number($(this).attr("latitude"));
+    console.log(latitude);
+    longitude = Number($(this).attr("longitude"));
+    myLatlng = new google.maps.LatLng(latitude,longitude)
     console.log('clicked this', this, $(this).attr('data-counter'))
     initialize_map($(this).attr('data-counter')); 
   })
-
-  // google.maps.event.addDomListener(aTag, 'click', function() {
-  //   initialize_map();
-  // });
-
-  
-  // google.maps.event.addListener(marker, 'click', function() {
-  //   infowindow.open(map,marker);
-  // });
-
-
 
 
