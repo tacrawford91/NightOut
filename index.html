@@ -101,39 +101,39 @@
 
                 
                 <!-- Accordion -->
-                <div class="panel-group result-item" data-toggle="collapse" data-target="#map" id="accordion">
+                <div class="panel-group result-item" id="accordion">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="map-button" data-toggle="collapse" data-target="#map">
-                                    <!-- Result #1 -->
-                                    <div class="row result-item">
-                                        <!-- Event Image -->
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div">
-                                            <img src="assets/images/placeHolder.jpg" alt="image" class="event-image"/>
-                                        </div>
-                                        <!-- Event Details -->
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div">
-                                            <h3 class="event-date">Saturday, January 20 2018</h3>
-                                            <h1 class="event-name">Justin Timberlake - The Man Of The Woods Tour</h1>
-                                            <h3 class="event-time">7:00 PM</h3>
-                                            <h4 class="event-click">Click Event for Map Details</h4>
-                                        </div>
-                                        <!-- Event Pricing / Location -->
-                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div">
-                                            <h3 class="start-as">Starting as low as</h3>
-                                            <h1 class="dollar">$</h1><h1 class="event-price">39</h1>
-                                            <h4 class="event-location">United Center</h4>
-                                            <h4 class="event-distance">2.1 Miles</h4>
-                                        </div>  
+                            <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                <!-- Result #1 -->
+                                <div class="row result-item">
+                                    <!-- Event Image -->
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div">
+                                        <img src="assets/images/placeHolder.jpg" alt="image" class="event-image"/>
                                     </div>
-                                    <i class="fa fa-chevron-down fa-spacing"></i>   
-                                </a>
-                            </h4>
+                                    <!-- Event Details -->
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div">
+                                        <h3 class="event-date">Saturday, January 20 2018</h3>
+                                        <h1 class="event-name">Justin Timberlake - The Man Of The Woods Tour</h1>
+                                        <h3 class="event-time">7:00 PM</h3>
+                                        <h4 class="event-click">Click Event for Map Details</h4>
+                                    </div>
+                                    <!-- Event Pricing / Location -->
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div">
+                                        <h3 class="start-as">Starting as low as</h3>
+                                        <h1 class="dollar">$</h1><h1 class="event-price">39</h1>
+                                        <h4 class="event-location">United Center</h4>
+                                        <h4 class="event-distance">2.1 Miles</h4>
+                                    </div>  
+                                </div> 
+                            </a>
+                            <i class="fa fa-chevron-down fa-spacing"></i>    
                         </div>
                         <!-- Map -->
-                        <div id="map" class="collapse">
-                            <div id="google-map" data-latitude="41.880697" data-longitude="-87.674181">
+                        <div id="collapse1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div id="google-map" class="marker" data-latitude="41.880697" data-longitude="-87.674181">
+                                </div>
                             </div>
                         </div>
                 </div>
@@ -142,14 +142,15 @@
         </div>
     </div>
 
-<script src="assets/js/google.js"></script>  
-<script src="assets/js/app.js"></script>
+  
 
 <script src="https://maps.googleapis.com/maps/api/js"></script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU">
 </script>
 
+<script src="assets/js/app.js"></script>
+<script src="assets/js/google.1.js"></script>
 <script src="assets/js/search.js"></script>    
 </body>
 </html>
