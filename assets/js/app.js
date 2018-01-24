@@ -274,7 +274,7 @@ $(document).ajaxStop(function() {
       var map_div = $("<div>").attr("id",`collapse${counter}`).addClass(`panel-collapse collapse`);
       //inside of map div goes
       var panelBody = $("<div>").attr("class", "panel-body");
-      var googlemap_div = $("<div>").attr("id", "google-map").attr("data-latitude", element.eventLatitude).attr("data-longitude", element.eventLongitude);
+      var googlemap_div = $("<div>").attr("id", "google-map").attr("class",`marker${count}`).attr("data-latitude", element.eventLatitude).attr("data-longitude", element.eventLongitude);
       panelBody.append(googlemap_div);
       map_div.append(panelBody);
       
