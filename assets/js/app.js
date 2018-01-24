@@ -25,7 +25,7 @@ var config = {
   var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=20&apikey=${tmAPIKey}`
 
 
-  var counter = 0;
+
   var searchNumber = 0;
   var eventIDArray = [];
   var eventPriceArray = [];
@@ -88,7 +88,7 @@ function showPosition(position) {
 $(".loadingRow").hide();
 //Listen for search
 $(".searchBtn").on("click", function() {
-  console.log("I WAS CLICKED") 
+
   database.ref(`search`).off("child_added")
   searchNumber = 0;
   eventIDArray = [];
@@ -102,6 +102,7 @@ $(".searchBtn").on("click", function() {
 
   //Grabbing User Input
   var userDateInput = $("#date").val();
+  var noEventDate = moment(userDateInput).format("MMMM Do, YYYY")
   userDate = userDateInput + "T17:00:00Z";
   endDate = userDateInput + "T23:59:59Z";
   userBudget = Number($("#budget").val())
@@ -118,6 +119,14 @@ $.ajax({
 
 }).done(function(response1){
     // Add data to firebase -
+    if (userBudget === 0) {
+      $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budet.</h1?`)
+      return
+    }
+    if (response1._embedded === undefined){
+      $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. PLease Try another day!</h1?`)
+      return
+    }
     for (var i = 0; i < response1._embedded.events.length; i++) {
       searchNumber++
        //event ID
@@ -231,70 +240,63 @@ $(document).ajaxStop(function() {
     //Hide loading animation 
     $(".loadingRow").hide();
     //create html
+    var counter = 0;
     eventPriceObjectArray.forEach(function(element){
       if (element.price < userBudget) {
       //Build Html element
       //contain col
-      var containingDiv = $("<div>").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12");
-      //accordion
-      var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", `collapse`).attr("data-target", `.map${counter}`).attr("id",`accordion`);
-      //panel panel-default
-      var panelDiv = $("<div>").addClass("panel panel-default");
-      //panel-heading
+      var containingDiv = $("<div>").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12")
+      //accordian
+      var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", `collapse`).attr("data-target", `#map`).attr("id",`accordion`)
+      //panel div
+      var panelDiv = $("<div>").addClass("panel panel-default mapper")
+      //panel-headeing
       var panelHeadingDiv = $("<div>").addClass("panel-heading");
-      //panel-title
-      var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `#collapse${counter}`);
-      //row result-item
+      // create map stuff
+      var map_div = $("<div>").attr("id",`map${counter}`).addClass("collapse");
+      //inside of map div goes
+      var googlemap_div = $("<div>").attr("id",`google-map`).attr("data-latitude", element.eventLatitude).attr("data-longitude",element.eventLongitude);
+      map_div.append(googlemap_div);
+      //panel title
+      var panelTitleDiv = $("<h4>").addClass("panel-title");
+      // a tag
+      var aTag = $("<a>").addClass("map-button").attr("data-toggle", "collapse").attr("data-target", `#map${counter}`).attr("data-parent",`accordion`);
+      //row div
       var rowDiv = $("<div>").addClass("row result-item");
-
+      //create icon
+      var icon = $("i").addClass("fa fa-chevron-down fa-spacing");
       //create image section
       var imgDiv = $("<div>").addClass("col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div").append($("<img>").attr("src",element.eventImage).addClass("event-image"));
-
       //event detais div
-      var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
+      var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div")
       var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
-      detailsDiv.append(date_h3,name_h1,time_h3);
-
+      var distance_h1 = $("<h1>").html(`Distance: ${element.eventDistance} miles away`).addClass("event-distance");
+      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
+      var click_h4=$("<h4>").html("Click Event for Map Details").addClass("event-click");    
+      detailsDiv.append(date_h3,name_h1,distance_h1,time_h3,click_h4);
       //pricing and location div
-      var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
+      var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div")
       var start_h3 = $("<h3>").html("Starting as low as").addClass("start-as");
       var dollar_h1 = $("<h1>").html("$").addClass("dollar");
       var price_h1 = $("<h1>").html(element.price).addClass("event-price");
       var venue_h4 = $("<h4>").html(element.venueName).addClass("event-location");
-      var distance_h4 = $("<h4>").html(`${element.eventDistance} miles away`).addClass("event-distance");
-      var click_h4=$("<h4>").html("Click Event for Map Details").addClass("event-click");
-      pricingDiv.append(start_h3,dollar_h1,price_h1,venue_h4,distance_h4,click_h4);
-      
-      //create iFrame
-      var iFrame = $("<i>").addClass("fa fa-chevron-down fa-spacing");
-      
-      // create map stuff
-      var map_div = $("<div>").attr("id",`collapse${counter}`).addClass(`panel-collapse collapse`);
-      //inside of map div goes
-      var panelBody = $("<div>").attr("class", "panel-body");
-      var googlemap_div = $("<div>").attr("id", "google-map").attr("class",`marker${count}`).attr("data-latitude", element.eventLatitude).attr("data-longitude", element.eventLongitude);
-      panelBody.append(googlemap_div);
-      map_div.append(panelBody);
-      
-      // APPEND imgDiv, detailsDiv, pricingDiv INTO row(result-item)
+      pricingDiv.append(start_h3,dollar_h1,price_h1,venue_h4);
+      // add all to row div
       rowDiv.append(imgDiv,detailsDiv,pricingDiv);
-
-      // APPEND result-item to aTag
-      aTag.append(rowDiv);
-
-      // APPEND to panelHeadingDiv
-      panelHeadingDiv.append(aTag);
-
-      // APPEND to panelDiv
-      panelDiv.append(panelHeadingDiv,iFrame,map_div);
-
-      // PanelDiv to accordion
+      //add  result item to aTag
+      aTag.append(rowDiv,icon);
+      //aTag to title
+      panelTitleDiv.append(aTag);
+      //title to heading
+      panelHeadingDiv.append(panelTitleDiv);
+      // heading to panel
+      panelDiv.append(panelHeadingDiv, map_div);
+      //panel to accorion
       accordion.append(panelDiv);
       //accordion to continaingDiv
       containingDiv.append(accordion);
-      // //add row to html containter
+      //add row to html containter
       $(".results-div").append(containingDiv);
 
 
@@ -314,41 +316,41 @@ $(document).ajaxStop(function() {
   //===================================================================
  
 
-var latitude = $(`.marker${counter}`).data('latitude');
-var longitude = $(`.marker${counter}`).data('longitude');
-function initialize_map() {
-  var myLatlng = new google.maps.LatLng(latitude,longitude);
-  var mapOptions = {
-    zoom: 14,
-    scrollwheel: false,
-    disableDefaultUI: true,
-    center: myLatlng
-  };
-  var map = new google.maps.Map(document.getElementById(`google-map`), mapOptions);
-  var contentString = '';
-  var infowindow = new google.maps.InfoWindow({
-    content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
-  });
+// var latitude = $(`#google-map`).data('latitude');
+// var longitude = $(`#google-map`).data('longitude');
+// function initialize_map() {
+//   var myLatlng = new google.maps.LatLng(latitude,longitude);
+//   var mapOptions = {
+//     zoom: 14,
+//     scrollwheel: false,
+//     disableDefaultUI: true,
+//     center: myLatlng
+//   };
+//   var map = new google.maps.Map(document.getElementById(`google-map`), mapOptions);
+//   var contentString = '';
+//   var infowindow = new google.maps.InfoWindow({
+//     content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
+//   });
   
-  var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map
-  });
+//   var marker = new google.maps.Marker({
+//     position: myLatlng,
+//     map: map
+//   });
   
   
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
-  });
-}
+//   google.maps.event.addListener(marker, 'click', function() {
+//     infowindow.open(map,marker);
+//   });
+// }
 
-  initialize_map();
-  $(`#map${counter}`).on('hidden.bs.collapse', function () {
-    initialize_map();
-  })
-  $(`#map${counter}`).on('shown.bs.collapse', function () {
-    initialize_map(); 
-  })
+//   initialize_map();
+//   $(`#map${counter}`).on('hidden.bs.collapse', function () {
+//     initialize_map();
+//   })
+//   $(`#map${counter}`).on('shown.bs.collapse', function () {
+//     initialize_map(); 
+//   })
 
-  google.maps.event.addDomListener(window, 'resize', function() {
+//   google.maps.event.addDomListener(window, 'resize', function() {
  
-  });
+//   });
