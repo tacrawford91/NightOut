@@ -9,21 +9,22 @@ var config = {
 };
 firebase.initializeApp(config);
 
-//set db varible 
+// Set Database varible 
 var database = firebase.database();
-//set up query1url
+// Set Up QueryOneURL
 var userCity;
 var userDate;
 var endDate;
 var userBudget = 100;
 
-
+// API Keys
 var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
 //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
 //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
 
 var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${userCity}&startDateTime=${userDate}&endDateTime=${endDate}&size=20&apikey=${tmAPIKey}`
 
+// Global Variables
 var counter = 0;
 var latitude;
 var longitude;
@@ -38,18 +39,11 @@ var x;
 
 database.ref().set("");
 
-//===================================================================
-//===================================================================
-
-//GEO LOCATION CODE BELOW // Grabbing User's Location 
-
-//===================================================================
-//===================================================================
-
+// Geolocation - User Location 
 var userLatLon;
 var myLatlng; 
 
-getLocation()
+getLocation();
 function getLocation() {
   if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -57,9 +51,10 @@ function getLocation() {
     //browswer does not support location 
       x = document.getElementById("location");
       x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
+  };
+};
 
+// Show Error
 function showError(error) {
 console.log('error', error)
 var x = document.getElementById("location");
@@ -77,20 +72,23 @@ switch(error.code) {
     case error.UNKNOWN_ERROR:
         x.innerHTML = "An unknown error occurred."
         break;
-}
-}
+};
+};
 
+// Show Position
 function showPosition(position) {
-// var x = document.getElementById("location");
-// x.innerHTML = "Latitude: " + position.coords.latitude + 
-// "<br>Longitude: " + position.coords.longitude; 
+  // Testing if this is necessary
+  // var x = document.getElementById("location");
+  // x.innerHTML = "Latitude: " + position.coords.latitude + 
+  // "<br>Longitude: " + position.coords.longitude; 
 userLatLon = position.coords.latitude + "," + position.coords.longitude;
 console.log("THE USER LOCATION IS " + userLatLon);
-}
+};
 
-//Hide loading animation
+// Hide Loading Animation
 $(".loadingRow").hide();
-//Listen for search
+
+// Listen For Search
 $(".searchBtn").on("click", function() {
 database.ref(`search`).off("child_added")
 searchNumber = 0;
@@ -103,7 +101,7 @@ htmladded = false
 database.ref().set("");
 event.preventDefault();
 
-//Grabbing User Input
+// Grab User Input
 var userDateInput = $("#date").val();
 var noEventDate = moment(userDateInput).format("MMMM Do, YYYY");
 userDate = userDateInput + "T17:00:00Z";
@@ -114,6 +112,7 @@ $(".loadingRow").show();
 //empty previous results
 $(".results-div").html("");
 
+// AJAX GET Ticketmaster
 $.ajax({     
 type:"GET",
 url:`https://app.ticketmaster.com/discovery/v2/events.json?latlong=${userLatLon}&radius=50&unit=miles&size=50&startDateTime=${userDate}&endDateTime=${endDate}&apikey=${tmAPIKey}`,
@@ -121,49 +120,49 @@ async:true,
 dataType: "json",
 
 }).done(function(response1){
-  //check for budget enetered
+  // Check IF Budget Entered
   if (userBudget === 0) {
     $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budet.</h1?`)
     return
-    }
-    //check if no events
-   if (response1._embedded === undefined){
+  };
+  // Check IF if no events
+  if (response1._embedded === undefined){
     $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. PLease Try another day!</h1?`)
-      return
-    }
-  // Add data to firebase -
+    return
+  };
+  // Add Data to Firebase (Loop)
   for (var i = 0; i < response1._embedded.events.length; i++) {
     searchNumber++
-     //event ID
+    // event ID
     var eventID = response1._embedded.events[i].id
     eventIDArray.push(eventID);
-    //event name
+    // event name
     var eventName = response1._embedded.events[i].name;
-    //event date
+    // event date
     var eventDate = response1._embedded.events[i].dates.start.dateTime;
     var eventDate = moment(eventDate).format("MMMM Do, YYYY");
-    //event time
+    // event time
     var eventTime = response1._embedded.events[i].dates.start.localTime;
     var eventTime = moment(eventTime, "HH:mm:ss").format("hh:mm A");
-    //event distance
+    // event distance
     var eventDistance = response1._embedded.events[i].distance
     // event image
     var eventImage = response1._embedded.events[i].images[6].url;
-    //Name of the venue
+    // venue name
     var venueName = response1._embedded.events[i]._embedded.venues[0].name;
-    //Coordinates: location returns an object with longitude and latitude properties
+    // event coordinates
     var eventCoordinates = response1._embedded.events[i]._embedded.venues[0].location;
-    //event longituge
+    // event longituge
     var eventLongitude = response1._embedded.events[i]._embedded.venues[0].location.longitude;
-    //event longituge
+    // event longituge
     var eventLatitude = response1._embedded.events[i]._embedded.venues[0].location.latitude;
-    //address of event
+    // event street address
     var eventAddress = response1._embedded.events[i]._embedded.venues[0].address.line1;
-    //city
+    // event city
     var eventCity = response1._embedded.events[i]._embedded.venues[0].city.name;
-    //state
+    // event state
     var eventState = response1._embedded.events[i]._embedded.venues[0].state.name;
-    //Postal Code
+    // event postal zip
     var eventZip = response1._embedded.events[i]._embedded.venues[0].postalCode;
 
     var eventLocation = {
@@ -189,12 +188,11 @@ dataType: "json",
   }
 })
 database.ref(`search`).on("child_added", function(snapshot) {
-  //console.log('child')
   if (snapshot.val() == null) {
     return;
   }
   var eventIDSearch = snapshot.val().eventID;
-  //console.log(eventIDSearch)
+  
   var queryTwoURL = `https://app.ticketmaster.com/commerce/v2/events/${eventIDSearch}/offers.json?apikey=${tmAPIKey}`
     $.ajax({
       url: queryTwoURL,
@@ -367,14 +365,55 @@ function initialize_map(id = 0) {
   });
 };
   
+$(document).on('click', '.panel-title', function () {
+  latitude = Number($(this).attr("latitude"));
+  console.log(latitude);
+  longitude = Number($(this).attr("longitude"));
+  myLatlng = new google.maps.LatLng(latitude,longitude)
+  console.log('clicked this', this, $(this).attr('data-counter'))
+  initialize_map($(this).attr('data-counter')); 
+});
 
-  $(document).on('click', '.panel-title', function () {
-    latitude = Number($(this).attr("latitude"));
-    console.log(latitude);
-    longitude = Number($(this).attr("longitude"));
-    myLatlng = new google.maps.LatLng(latitude,longitude)
-    console.log('clicked this', this, $(this).attr('data-counter'))
-    initialize_map($(this).attr('data-counter')); 
-  })
+// Change date on form to today
+$(document).ready(function() {
+  var date = new Date();
+
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+
+  if (month < 10) month = "0" + month;
+  if (day < 10) day = "0" + day;
+
+  var today = year + "-" + month + "-" + day;       
+  $("#date").attr("value", today);
+  $("#date-nav").attr("value", today);
+});
+
+// Scroll down animation - on click .search
+$(document).ready(function(){
+  // Add smooth scrolling to all links
+  $(".search").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+   
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+});
 
 

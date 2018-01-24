@@ -1,8 +1,14 @@
-/* Format body and containers */
+/* HTML, Body, Containers */
 html, body {
     height: 100%;
     width:100%;
     margin: 0;
+}
+
+body {
+    background:#333;
+	background: -webkit-gradient(radial, center center, 120, center center, 900, from(#33495E), to(#2E2329));
+	background:-moz-radial-gradient(circle, #33495E, #2E2329);
 }
 
 .container-fluid, .container {
@@ -11,13 +17,14 @@ html, body {
     border-radius:0px;
 }
 
-/* Place video in background */
+/* BG Video */
 .video-holder {
     height:100vh;
     width:100%;
     z-index: -100;
     overflow:hidden;
 }
+
 #video-background {
     object-fit: cover;
     width: 100%;
@@ -30,8 +37,7 @@ video::-webkit-media-controls {
     display:none !important;
 }
 
-
-/* Style for Logo, title and Tagline on main landing page */
+/* Landing Page Logo & Title */
 .main-page {
     position:absolute;
     width:100%;
@@ -77,7 +83,7 @@ video::-webkit-media-controls {
 }
 
 
-/* Format the input form */
+/* Landing Page Input Form */
 #main-search {
     width: 450px;
     margin: 0 auto;
@@ -91,8 +97,11 @@ video::-webkit-media-controls {
     border-radius: 0;
 }
 
+.form-group {
+    margin: 0 auto;
+}
 
-/* Format the search buttom */
+/* Search Button */
 .btn-primary, .btn-results {
     width: 100px;
     height: 40px;
@@ -104,12 +113,7 @@ video::-webkit-media-controls {
     color: white;
 }
 
-/* Center the input form and search button on the main landing page */
-.form-group {
-    margin: 0 auto;
-}
-
-/* Format the navigation bar on the secondary page */
+/* Navbar */
 .navbar-default {
     height: 80px;
     width: auto;
@@ -132,7 +136,7 @@ video::-webkit-media-controls {
     margin-bottom: 15px;
 }
 
-/* Add logo and title on the navigation bar on the secondary page */
+/* Navbar Logo & Title */
 .icon2 {
     height:50px !important;
     width: auto !important;
@@ -147,7 +151,7 @@ span {
     font-size: 35px;
 }
 
-/* Format the input form on the secondary page */
+/* Secondary Input on Navbar */
 #budget-nav, #date-nav, #btn-nav {
     width: 160px;
     height: 40px;
@@ -164,15 +168,14 @@ span {
     border-radius: 0;
 }
 
-/* Change secondary page background to grey */
+/* Results Container */
 #page-results {
     width: 100%;
     height: 100vh;
-    /* margin-top: 45px; */
     z-index:100;
 }
 
-/* Format the results div */
+/* Results Div & Accordion */
 .results-div {
     margin: 10px 20px;
 }
@@ -180,6 +183,11 @@ span {
 #accordion {
     border-radius:6px;
     margin-top: 10px;
+}
+
+.collapse {
+    height: 350px;
+    width:100%;
 }
 
 .result-item {
@@ -197,7 +205,7 @@ h1 {
  }
 
 
- /* Format the Event Image and Event Image area */
+ /* Event Image (Left) */
 .img-div {
     padding:0px;
     height:100%;
@@ -209,7 +217,7 @@ h1 {
     height:100%;
 }
 
- /* Format the Event Title, Date and Time area */
+/* Event Details (Middle) */
 .details-div {
     background-color:#f8f8f8;
     height: 100%;
@@ -240,8 +248,7 @@ h1 {
     margin-top:10px;
  }
 
-
- /* Format the Event Pricing and Event Location area */
+/* Event Pricing & Location (Right) */
 .pricing-div {
     height:100%;
     text-align:right;
@@ -277,8 +284,6 @@ h1 {
     margin-bottom:0px;
 }
 
-
-/* Format the Click Here for Map Details area */
 .event-click {
     font-size: .8em;
     color: grey;
@@ -295,7 +300,7 @@ h1 {
 }
 
 
-/* Format the Google Map once the Accordion Expands */
+/* Google Maps */
 .map {
     height: 350px;
     width:100%;
@@ -303,7 +308,6 @@ h1 {
 
 .gmap {
     position: relative;
-    /* overflow: hidden; */
     height: 320px;
     width: 100%;
     z-index: 500;
@@ -313,42 +317,7 @@ h1 {
     margin: 0px;
 }
 
-.collapse {
-    height: 350px;
-    width:100%;
-}
-
-
-
-/* Add the below style if we get to adding City and State options */
-
-/* select {
-    width: 100px;
-    height: 40px;
-    border-radius: 0px;
-    background-color: white;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
-    padding-left:13px;
-    padding-bottom:2px;
-    color:grey;
-    border: 1px solid #ccc;
-    float: left;
-    margin-left: 10px;
-    margin-top: 15px;
-} */
-
-/* .state-main {
-    margin:5px;
-} */
-
-/* The below CSS formats the loading image after you press search */
-body{
-	background:#333;
-	background: -webkit-gradient(radial, center center, 120, center center, 900, from(#33495E), to(#2E2329));
-	background:-moz-radial-gradient(circle, #33495E, #2E2329);
-
-}
+/* Loading Animations */
 .loader{
 	margin:200px auto;
 }
@@ -391,7 +360,6 @@ body{
 	-moz-animation:kanan 1.2s infinite linear;
 	-o-animation:kanan 1.2s infinite linear;
 }
-
 
 @-webkit-keyframes kanan {
     0% {-webkit-transform:translateX(20px);
