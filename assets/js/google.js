@@ -2,8 +2,6 @@
 //Google Maps API Key -Shawn
 // AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU
 
-(function ($) {
-
     /*
      *  render_map
      *
@@ -18,16 +16,21 @@
      */
     var map;
 
-    function render_map($el) {
+    function initMap($el) {
 
         // var
         var $markers = $el.find('.marker');
 
+        var myLatlng = new google.maps.LatLng(latitude,longitude);
+
         // vars
         var args = {
-            zoom: 16,
-            center: new google.maps.LatLng(0, 0),
+            zoom: 14,
+            scrollwheel: false,
+            draggable: false,
+            center: myLatlng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
+            
         };
 
         // create map	        	
@@ -124,7 +127,7 @@
         if (map.markers.length == 1) {
             // set center of map
             map.setCenter(map.markers[0].getPosition());
-            map.setZoom(4);
+            map.setZoom(15);
         } else {
             // fit to bounds
             map.fitBounds(bounds);
@@ -149,21 +152,24 @@
         var maps =[];
         $('.map').each(function (i,val) {
             console.log(i+" ,val:"+val);
-            maps.push(render_map($(this)));
+            maps.push(initMap($(this)));
         });
-        // $(function () {
-        //     $("#contact").accordion({
-        //         collapsible: true,
-        //         activate: function (event, ui) {
-        //             for (var i=0;i<maps.length;i++) {
-        //             google.maps.event.trigger(maps[i], "resize");
-        //             center_map(maps[i]);
-        //             }
-        //         }
-        //     });
-        // });
+        $(function () {
+            $(".map-button").accordion({
+                collapsible: true,
+                activate: function (event, ui) {
+                    for (var i=0;i<maps.length;i++) {
+                    google.maps.event.trigger(maps[i], "resize");
+                    center_map(maps[i]);
+                    }
+                }
+            });
+        });
     });
-})(jQuery);
+
+    google.maps.event.addDomListener(window, 'resize', function() {
+      
+    });
 
 
 
