@@ -238,15 +238,15 @@ $(document).ajaxStop(function() {
       //contain col
       var containingDiv = $("<div>").addClass("col-xs-12 col-sm-12 col-md-12 col-lg-12")
       //accordian
-      var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", `collapse`).attr("data-target", `#map`).attr("id",`accordion`)
+      var accordion = $("<div>").addClass("panel-group result-item").attr("data-toggle", `collapse`).attr("data-target", `.map${counter}`).attr("id",`accordion`)
       //panel div
       var panelDiv = $("<div>").addClass("panel panel-default mapper")
       //panel-headeing
       var panelHeadingDiv = $("<div>").addClass("panel-heading");
       // create map stuff
-      var map_div = $("<div>").attr("id",`map${counter}`).addClass("collapse");
+      var map_div = $("<div>").attr("class",`map${counter}`).addClass("collapse");
       //inside of map div goes
-      var googlemap_div = $("<div>").attr("id",`google-map`).attr("data-latitude", element.eventLatitude).attr("data-longitude",element.eventLongitude);
+      var googlemap_div = $("<div>").attr("class",`marker`).attr("data-latitude", element.eventLatitude).attr("data-longitude", element.eventLongitude);
       map_div.append(googlemap_div);
       //panel title
       var panelTitleDiv = $("<h4>").addClass("panel-title");
@@ -254,29 +254,30 @@ $(document).ajaxStop(function() {
       var aTag = $("<a>").addClass("map-button").attr("data-toggle", "collapse").attr("data-target", `#map${counter}`).attr("data-parent",`accordion`);
       //row div
       var rowDiv = $("<div>").addClass("row result-item");
-      //create icon
-      var icon = $("i").addClass("fa fa-chevron-down fa-spacing");
+      //create iFrame
+      var iFrame = $("i").addClass("fa fa-chevron-down fa-spacing");
       //create image section
       var imgDiv = $("<div>").addClass("col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div").append($("<img>").attr("src",element.eventImage).addClass("event-image"));
       //event detais div
       var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div")
       var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-      var distance_h1 = $("<h1>").html(`Distance: ${element.eventDistance} miles away`).addClass("event-distance");
-      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
-      var click_h4=$("<h4>").html("Click Event for Map Details").addClass("event-click");    
-      detailsDiv.append(date_h3,name_h1,distance_h1,time_h3,click_h4);
+      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
+      detailsDiv.append(date_h3,name_h1,time_h3);
+
       //pricing and location div
       var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div")
       var start_h3 = $("<h3>").html("Starting as low as").addClass("start-as");
       var dollar_h1 = $("<h1>").html("$").addClass("dollar");
       var price_h1 = $("<h1>").html(element.price).addClass("event-price");
       var venue_h4 = $("<h4>").html(element.venueName).addClass("event-location");
-      pricingDiv.append(start_h3,dollar_h1,price_h1,venue_h4);
+      var distance_h4 = $("<h4>").html(`${element.eventDistance} miles away`).addClass("event-distance");
+      var click_h4=$("<h4>").html("Click Event for Map Details").addClass("event-click");
+      pricingDiv.append(start_h3,dollar_h1,price_h1,venue_h4,distance_h4,click_h4);
       // add all to row div
       rowDiv.append(imgDiv,detailsDiv,pricingDiv);
-      //add  result item to aTag
-      aTag.append(rowDiv,icon);
+      //add result item to aTag
+      aTag.append(rowDiv,iFrame);
       //aTag to title
       panelTitleDiv.append(aTag);
       //title to heading
