@@ -91,7 +91,6 @@ console.log("THE USER LOCATION IS " + userLatLon);
 $(".loadingRow").hide();
 //Listen for search
 $(".searchBtn").on("click", function() {
-console.log("I WAS CLICKED") 
 database.ref(`search`).off("child_added")
 searchNumber = 0;
 eventIDArray = [];
@@ -105,6 +104,7 @@ event.preventDefault();
 
 //Grabbing User Input
 var userDateInput = $("#date").val();
+var noEventDate = moment(userDateInput).format("MMMM Do, YYYY");
 userDate = userDateInput + "T17:00:00Z";
 endDate = userDateInput + "T23:59:59Z";
 userBudget = Number($("#budget").val())
@@ -120,6 +120,16 @@ async:true,
 dataType: "json",
 
 }).done(function(response1){
+  //check for budget enetered
+  if (userBudget === 0) {
+    $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budet.</h1?`)
+    return
+    }
+    //check if no events
+   if (response1._embedded === undefined){
+    $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. PLease Try another day!</h1?`)
+      return
+    }
   // Add data to firebase -
   for (var i = 0; i < response1._embedded.events.length; i++) {
     searchNumber++
