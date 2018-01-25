@@ -763,8 +763,9 @@ $(".searchBtn2").on("click", function(event) {
       var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
       var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
-      detailsDiv.append(date_h3,name_h1,time_h3);
+      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
+      var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
+      detailsDiv.append(date_h3,name_h1,time_h3, ticketMasterButton);
   
       //pricing and location div
       var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
