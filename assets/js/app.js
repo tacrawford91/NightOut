@@ -777,16 +777,9 @@ $(".searchBtn2").on("click", function(event) {
       }
     })
   })
-  });
+});
 
-
-
-
-
-
-//===================================================================
- // GOOGLE MAP ITERATION
-//===================================================================
+///////////// GOOGLE MAP ITERATION
 
 function initialize_map(id = 0) {
   var container = document.getElementById(`google-map${id.toString()}`)
@@ -803,16 +796,27 @@ function initialize_map(id = 0) {
   console.log("my latlng is  ---- " + myLatlng)
   var map = new google.maps.Map(container, mapOptions);
   var contentString = '';
-  // var infowindow = new google.maps.InfoWindow({
-  //   content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
-  // });
-  
+ 
+  // On Idle/load to place the marker + info window
+  google.maps.event.addListener(map, 'idle', function(event) {
+    placeMarker(map, myLatlng);
+    });
+};
+
+// Place marker function
+function placeMarker(map, location) {
   var marker = new google.maps.Marker({
-    position: myLatlng,
+    position: location,
     map: map
   });
-};
-  
+  // Infowindow
+  var infowindow = new google.maps.InfoWindow({
+    content: '<strong>' + location.lat() + '</strong>' +
+    '<br>Longitude: ' + location.lng()
+  });
+  infowindow.open(map,marker);
+}
+
 $(document).on('click', '.panel-title', function () {
   latitude = Number($(this).attr("latitude"));
   console.log(latitude);
@@ -821,6 +825,9 @@ $(document).on('click', '.panel-title', function () {
   console.log('clicked this', this, $(this).attr('data-counter'))
   initialize_map($(this).attr('data-counter')); 
 });
+
+///////////// END GOOGLE MAPS
+
 
 // Change date on form to today
 $(document).ready(function() {
