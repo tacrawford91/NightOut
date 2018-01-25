@@ -125,6 +125,7 @@ video::-webkit-media-controls {
     font-family: Lato;
     border-radius: 0;
     color: white;
+    margin-top: 6px;
 }
 
 /* Navbar */
@@ -219,6 +220,10 @@ span {
     overflow:hidden;
  }
 
+.panel-heading {
+    padding: 0px 5px 0px 15px;
+}
+
 h1 {
     width: 60%;
     margin: 0 auto;
@@ -254,7 +259,7 @@ h1 {
 .event-date {
     color:grey;
     font-size:.9em;
-    margin-top:5px;
+    margin-top:-2px;
     font-family:Lato;
 }
 
@@ -286,7 +291,6 @@ h1 {
 
 .start-as {
     font-size:1em;
-    margin-top:5px;
     color:grey;
     font-family: Fjalla One;
 }
@@ -295,7 +299,7 @@ h1 {
     font-size: .9em;
     color: #EC644B;
     font-family: Fjalla One;
-    padding-top: 10px;
+    padding-top: 18px;
     margin: 0px;
 }
 

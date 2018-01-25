@@ -28,6 +28,9 @@ var queryOneURL = `https://app.ticketmaster.com/discovery/v2/events.json?city=${
 var counter = 0;
 var latitude;
 var longitude;
+var thisVenue;
+var contentString;
+var thisAddress;
 var searchNumber = 0;
 var eventIDArray = [];
 var eventPriceArray = [];
@@ -614,7 +617,16 @@ $(".searchBtn2").on("click", function(event) {
       //panel-heading
       var panelHeadingDiv = $("<div>").addClass("panel-heading");
       //panel-title
-      var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`).attr("longitude", element.eventLongitude).attr("latitude", element.eventLatitude);
+      var aTag = $("<a>")
+        .addClass("panel-title")
+        .attr("data-toggle", "collapse")
+        .attr("data-parent", "#accordion")
+        .attr("href", `.collapse${counter.toString()}`)
+        .attr("data-counter", `${counter.toString()}`)
+        .attr("longitude", element.eventLongitude)
+        .attr("latitude", element.eventLatitude)
+        .data("venue", element.venueName)
+        .data("address", element.eventAddress);
       //row result-item
       var rowDiv = $("<div>").addClass("row result-item");
   
@@ -653,7 +665,9 @@ $(".searchBtn2").on("click", function(event) {
         .attr("id", `google-map${counter.toString()}`)
         .attr("class",`gmap marker${counter.toString()}`)
         .attr("data-latitude", element.eventLatitude)
-        .attr("data-longitude", element.eventLongitude);
+        .attr("data-longitude", element.eventLongitude)
+        .attr("data-thisvenue", element.venueName)
+        .attr("data-thisaddress", element.eventAddress);
   
       panelBody.append(googlemap_div);
       map_div.append(panelBody);
@@ -703,12 +717,24 @@ $(".searchBtn2").on("click", function(event) {
       //panel-heading
       var panelHeadingDiv = $("<div>").addClass("panel-heading");
       //panel-title
-      var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`).attr("longitude", element.eventLongitude).attr("latitude", element.eventLatitude);
+      var aTag = $("<a>")
+        .addClass("panel-title")
+        .attr("data-toggle", "collapse")
+        .attr("data-parent", "#accordion")
+        .attr("href", `.collapse${counter.toString()}`)
+        .attr("data-counter", `${counter.toString()}`)
+        .attr("longitude", element.eventLongitude)
+        .attr("latitude", element.eventLatitude)
+        .data("venue", element.venueName)
+        .data("address", element.eventAddress);
       //row result-item
       var rowDiv = $("<div>").addClass("row result-item");
   
       //create image section
-      var imgDiv = $("<div>").addClass("col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div").append($("<img>").attr("src",element.eventImage).addClass("event-image"));
+      var imgDiv = $("<div>")
+        .addClass("col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div")
+        .append($("<img>").attr("src",element.eventImage)
+        .addClass("event-image"));
   
       //event detais div
       var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
@@ -742,7 +768,9 @@ $(".searchBtn2").on("click", function(event) {
         .attr("id", `google-map${counter.toString()}`)
         .attr("class",`gmap marker${counter.toString()}`)
         .attr("data-latitude", element.eventLatitude)
-        .attr("data-longitude", element.eventLongitude);
+        .attr("data-longitude", element.eventLongitude)
+        .attr("data-thisvenue", element.venueName)
+        .attr("data-thisaddress", element.eventAddress);
   
       panelBody.append(googlemap_div);
       map_div.append(panelBody);
@@ -777,16 +805,9 @@ $(".searchBtn2").on("click", function(event) {
       }
     })
   })
-  });
+});
 
-
-
-
-
-
-//===================================================================
- // GOOGLE MAP ITERATION
-//===================================================================
+///////////// GOOGLE MAP ITERATION
 
 function initialize_map(id = 0) {
   var container = document.getElementById(`google-map${id.toString()}`)
@@ -803,24 +824,46 @@ function initialize_map(id = 0) {
   console.log("my latlng is  ---- " + myLatlng)
   var map = new google.maps.Map(container, mapOptions);
   var contentString = '';
-  // var infowindow = new google.maps.InfoWindow({
-  //   content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
-  // });
-  
+ 
+  // On Idle/load to place the marker + info window
+  google.maps.event.addListener(map, 'idle', function(event) {
+    placeMarker(map, myLatlng);
+    });
+};
+
+// Place marker function
+function placeMarker(map, location) {
   var marker = new google.maps.Marker({
     position: myLatlng,
     map: map
   });
+
+  // Infowindow
+  var infowindow = new google.maps.InfoWindow({
+    content: thisVenue + '<br>' + thisAddress
+  });
+
+  infowindow.open(map,marker);
 };
-  
+
 $(document).on('click', '.panel-title', function () {
   latitude = Number($(this).attr("latitude"));
   console.log(latitude);
   longitude = Number($(this).attr("longitude"));
+  thisVenue = String($(this).data("venue"));
+  console.log(thisVenue);
+  thisAddress = String($(this).data("address"));
+  console.log(thisAddress);
   myLatlng = new google.maps.LatLng(latitude,longitude)
   console.log('clicked this', this, $(this).attr('data-counter'))
-  initialize_map($(this).attr('data-counter')); 
+  initialize_map($(this).attr('data-counter'));
 });
+
+
+
+
+///////////// END GOOGLE MAPS
+
 
 // Change date on form to today
 $(document).ready(function() {
