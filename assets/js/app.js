@@ -18,7 +18,7 @@ var endDate;
 var userBudget = 100;
 
 // API Keys
-var tmAPIKey = "wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG"
+var tmAPIKey = "azBYRomG6It2EA4V0vjcXjBjD9vYNY1b"
 //wUcrA6tbANpAMWxRSlf4FNsKsWLbgzhG - TROY api KEY
 //azBYRomG6It2EA4V0vjcXjBjD9vYNY1b - Shawn api KEY
 
@@ -274,7 +274,7 @@ $(document).ajaxStop(function() {
     var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
     var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
     //Buy Now button that links the user to ticketmaster
-    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy");   
+    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
     detailsDiv.append(date_h3,name_h1,time_h3);
     //Append the Buy Now button to show on
     detailsDiv.append(date_h3,name_h1,time_h3,ticketMasterButton);
