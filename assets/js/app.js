@@ -29,8 +29,9 @@ var counter = 0;
 var latitude;
 var longitude;
 var thisVenue;
-var contentString;
 var thisAddress;
+var thisCity;
+var thisState;
 var searchNumber = 0;
 var eventIDArray = [];
 var eventPriceArray = [];
@@ -40,6 +41,11 @@ var htmladded = false
 var x;
 
 database.ref().set("");
+
+// Scroll to top on page refresh
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+}
 
 // Geolocation - User Location 
 var userLatLon;
@@ -92,16 +98,16 @@ $(".loadingRow").hide();
 // Listen For Search
 
 $(".searchBtn").on("click", function(event) {
-counter = 0
-database.ref(`search`).off("child_added")
-database.ref(`search`).off("child_added")
+counter = 0;
+database.ref(`search`).off("child_added");
+database.ref(`search`).off("child_added");
 searchNumber = 0;
 eventIDArray = [];
 eventPriceArray = [];
 eventPriceObjectArray = [];
 noPriceObjectArray = [];
 eventPriceCounter = 0;
-htmladded = false 
+htmladded = false; 
 database.ref().set("");
 event.preventDefault();
 
@@ -126,20 +132,20 @@ dataType: "json",
 }).done(function(response1){
   // Check IF Budget Entered
   if (userBudget === 0) {
-    $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budget.</h1>`)
-    return
+    $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budget.</h1>`);
+    return;
   };
   // Check IF if no events
   if (response1._embedded === undefined){
 
-    $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. Please Try another date!</h1>`)
-    return
+    $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. Please Try another date!</h1>`);
+    return;
   };
   // Add Data to Firebase (Loop)
   for (var i = 0; i < response1._embedded.events.length; i++) {
     searchNumber++
     // event ID
-    var eventID = response1._embedded.events[i].id
+    var eventID = response1._embedded.events[i].id;
     eventIDArray.push(eventID);
     // event name
     var eventName = response1._embedded.events[i].name;
@@ -152,7 +158,7 @@ dataType: "json",
     var eventTime = response1._embedded.events[i].dates.start.localTime;
     var eventTime = moment(eventTime, "HH:mm:ss").format("hh:mm A");
     // event distance
-    var eventDistance = response1._embedded.events[i].distance
+    var eventDistance = response1._embedded.events[i].distance;
     // event image
     var eventImage = response1._embedded.events[i].images[6].url;
     // venue name
@@ -192,7 +198,7 @@ dataType: "json",
       eventTime: eventTime,
       eventDistance: eventDistance,
       eventURL: eventURL
-    })
+    });
   }
 })
 database.ref(`search`).on("child_added", function(snapshot) {
@@ -252,6 +258,7 @@ $(document).ajaxStop(function() {
 // if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
   //Hide loading animation 
   $(".loadingRow").hide();
+  $(".results-div").empty();
 
   //create html
   eventPriceObjectArray.forEach(function(element){
@@ -288,7 +295,8 @@ $(document).ajaxStop(function() {
     var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
     var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
     //Buy Now button that links the user to ticketmaster
-    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
+    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center"); 
+    console.log(ticketMasterButton);  
     detailsDiv.append(date_h3,name_h1,time_h3);
     //Append the Buy Now button to show on
     detailsDiv.append(date_h3,name_h1,time_h3,ticketMasterButton);
@@ -394,8 +402,9 @@ $(document).ajaxStop(function() {
     var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
     var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
     var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-    var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
-    detailsDiv.append(date_h3,name_h1,time_h3);
+    var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
+    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
+    detailsDiv.append(date_h3,name_h1,time_h3,ticketMasterButton);
 
     //pricing and location div
     var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
@@ -469,14 +478,15 @@ $(document).ajaxStop(function() {
 
 // Listen For Search
 $(".searchBtn2").on("click", function(event) {
-  database.ref(`search`).off("child_added")
+  database.ref(`search`).off("child_added");
   searchNumber = 0;
+  counter = 0;
   eventIDArray = [];
   eventPriceArray = [];
   eventPriceObjectArray = [];
   noPriceObjectArray = [];
   eventPriceCounter = 0;
-  htmladded = false 
+  htmladded = false; 
   database.ref().set("");
   event.preventDefault();
   
@@ -490,6 +500,7 @@ $(".searchBtn2").on("click", function(event) {
   $(".loadingRow").show();
   //empty previous results
   $(".results-div").html("");
+  $(".results-div").empty();
   
   // AJAX GET Ticketmaster
   $.ajax({     
@@ -501,19 +512,19 @@ $(".searchBtn2").on("click", function(event) {
   }).done(function(response1){
     // Check IF Budget Entered
     if (userBudget === 0) {
-      $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budet.</h1?`)
+      $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budget.</h1?`)
       return
     };
     // Check IF if no events
     if (response1._embedded === undefined){
-      $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. PLease Try another day!</h1?`)
+      $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. Please Try another day!</h1?`)
       return
     };
     // Add Data to Firebase (Loop)
     for (var i = 0; i < response1._embedded.events.length; i++) {
       searchNumber++
       // event ID
-      var eventID = response1._embedded.events[i].id
+      var eventID = response1._embedded.events[i].id;
       eventIDArray.push(eventID);
       // event name
       var eventName = response1._embedded.events[i].name;
@@ -524,7 +535,7 @@ $(".searchBtn2").on("click", function(event) {
       var eventTime = response1._embedded.events[i].dates.start.localTime;
       var eventTime = moment(eventTime, "HH:mm:ss").format("hh:mm A");
       // event distance
-      var eventDistance = response1._embedded.events[i].distance
+      var eventDistance = response1._embedded.events[i].distance;
       // event image
       var eventImage = response1._embedded.events[i].images[6].url;
       // venue name
@@ -621,6 +632,7 @@ $(".searchBtn2").on("click", function(event) {
   // if  (eventPriceObjectArray.length + noPriceObjectArray.length === eventIDArray.length && htmladded === false) {
     //Hide loading animation 
     $(".loadingRow").hide();
+    $(".results-div").empty();
   
     //create html
     eventPriceObjectArray.forEach(function(element){
@@ -655,8 +667,9 @@ $(".searchBtn2").on("click", function(event) {
       var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
       var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
-      detailsDiv.append(date_h3,name_h1,time_h3);
+      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
+      var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
+      detailsDiv.append(date_h3,name_h1,time_h3,ticketMasterButton);
   
       //pricing and location div
       var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
@@ -708,14 +721,8 @@ $(".searchBtn2").on("click", function(event) {
       containingDiv.append(accordion);
       // //add row to html containter
       $(".results-div").append(containingDiv);
-  
       // Add +1
       counter++
-      
-  
-      // // Google Maps
-      // latitude = element.eventLatitude;
-      // longitude = element.eventLongitude;
     }
     htmladded = true
     })
@@ -758,8 +765,9 @@ $(".searchBtn2").on("click", function(event) {
       var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
       var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
       var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
-      detailsDiv.append(date_h3,name_h1,time_h3);
+      var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
+      var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
+      detailsDiv.append(date_h3,name_h1,time_h3, ticketMasterButton);
   
       //pricing and location div
       var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
@@ -836,7 +844,6 @@ function initialize_map(id = 0) {
     center: myLatlng
   };
   var map = new google.maps.Map(container, mapOptions);
-  var contentString = '';
  
   // On Idle/load to place the marker + info window
   google.maps.event.addListener(map, 'idle', function(event) {
