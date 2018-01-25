@@ -357,15 +357,33 @@ function initialize_map(id = 0) {
   console.log("my latlng is  ---- " + myLatlng)
   var map = new google.maps.Map(container, mapOptions);
   var contentString = '';
-  // var infowindow = new google.maps.InfoWindow({
-  //   content: '<div class="map-content"><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
-  // });
+  var infowindow = new google.maps.InfoWindow({
+    content: 'hello'
+    // content: '<div class="map-content"><ul class="venuename">' + $('.venuename').html(element.venueName) + '</ul><ul class="address">' + $('.address').html(element.eventAddress) + '</ul></div>'
+  });
   
   var marker = new google.maps.Marker({
     position: myLatlng,
+    animation: google.maps.Animation.DROP,
     map: map
   });
+
+  google.maps.event.addListener(marker, 'click', function() {  
+    // this = marker
+    var marker_map = this.getMap();
+    this.info.open(marker_map, this);
+    // this.info.open(marker_map, this);
+    // Note: If you call open() without passing a marker, the InfoWindow will use the position specified upon construction through the InfoWindowOptions object literal.
+  });
 };
+
+function toggleBounce() {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
   
 
   $(document).on('click', '.panel-title', function () {
