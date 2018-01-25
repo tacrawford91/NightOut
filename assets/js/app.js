@@ -875,7 +875,7 @@ function placeMarker(map, location) {
 
   // Infowindow
   var infowindow = new google.maps.InfoWindow({
-    content: thisVenue + '<br>' + thisAddress + '<br>' + thisCity + ', '+ thisState
+    content: '<strong>' + thisVenue + '</strong><br>' + thisAddress + '<br>' + thisCity + ', '+ thisState + '<br><a style="color:teal; padding-left:3px" href="https://www.google.com/maps/place/' + thisVenue + '" target="_blank">View on Google Maps</a>' 
   });
 
   infowindow.open(map,marker);
