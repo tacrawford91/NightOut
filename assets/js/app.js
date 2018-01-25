@@ -216,11 +216,11 @@ database.ref(`search`).on("child_added", function(snapshot) {
         price: Number(response2.prices.data[0].attributes.value),
         eventImage: snapshot.val().eventImage,
         venueName: snapshot.val().venueName,
-        eventCoordinates: snapshot.val().eventCoordinates,
+        eventCoordinates: snapshot.val().eventLocation.coordinates,
         eventTime: snapshot.val().eventTime,
         eventLongitude: snapshot.val().eventLongitude,
         eventLatitude: snapshot.val().eventLatitude,
-        eventAddress: snapshot.val().eventAddress,
+        eventAddress: snapshot.val().eventLocation.address,
         eventDistance: snapshot.val().eventDistance,
         eventURL: snapshot.val().eventURL
       
@@ -238,11 +238,11 @@ database.ref(`search`).on("child_added", function(snapshot) {
     eventDate: snapshot.val().eventDate,
     eventImage: snapshot.val().eventImage,
     venueName: snapshot.val().venueName,
-    eventCoordinates: snapshot.val().eventCoordinates,
+    eventCoordinates: snapshot.val().eventLocation.coordinates,
     eventTime: snapshot.val().eventTime,
     eventLongitude: snapshot.val().eventLongitude,
     eventLatitude: snapshot.val().eventLatitude,
-    eventAddress: snapshot.val().eventAddress,
+    eventAddress: snapshot.val().eventLocation.address,
     eventDistance: snapshot.val().eventDistance,
     eventURL: snapshot.val().eventURL
   })
@@ -266,7 +266,16 @@ $(document).ajaxStop(function() {
     //panel-heading
     var panelHeadingDiv = $("<div>").addClass("panel-heading");
     //panel-title
-    var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`).attr("longitude", element.eventLongitude).attr("latitude", element.eventLatitude);
+    var aTag = $("<a>")
+    .addClass("panel-title")
+    .attr("data-toggle", "collapse")
+    .attr("data-parent", "#accordion")
+    .attr("href", `.collapse${counter.toString()}`)
+    .attr("data-counter", `${counter.toString()}`)
+    .attr("longitude", element.eventLongitude)
+    .attr("latitude", element.eventLatitude)
+    .data("venue", element.venueName)
+    .data("address", element.eventAddress);
     //row result-item
     var rowDiv = $("<div>").addClass("row result-item");
 
@@ -365,7 +374,16 @@ $(document).ajaxStop(function() {
     //panel-heading
     var panelHeadingDiv = $("<div>").addClass("panel-heading");
     //panel-title
-    var aTag = $("<a>").addClass("panel-title").attr("data-toggle", "collapse").attr("data-parent", "#accordion").attr("href", `.collapse${counter.toString()}`).attr("data-counter", `${counter.toString()}`).attr("longitude", element.eventLongitude).attr("latitude", element.eventLatitude);
+    var aTag = $("<a>")
+    .addClass("panel-title")
+    .attr("data-toggle", "collapse")
+    .attr("data-parent", "#accordion")
+    .attr("href", `.collapse${counter.toString()}`)
+    .attr("data-counter", `${counter.toString()}`)
+    .attr("longitude", element.eventLongitude)
+    .attr("latitude", element.eventLatitude)
+    .data("venue", element.venueName)
+    .data("address", element.eventAddress);
     //row result-item
     var rowDiv = $("<div>").addClass("row result-item");
 
@@ -569,11 +587,11 @@ $(".searchBtn2").on("click", function(event) {
           price: Number(response2.prices.data[0].attributes.value),
           eventImage: snapshot.val().eventImage,
           venueName: snapshot.val().venueName,
-          eventCoordinates: snapshot.val().eventCoordinates,
+          eventCoordinates: snapshot.val().eventLocation.coordinates,
           eventTime: snapshot.val().eventTime,
           eventLongitude: snapshot.val().eventLongitude,
           eventLatitude: snapshot.val().eventLatitude,
-          eventAddress: snapshot.val().eventAddress,
+          eventAddress: snapshot.val().eventLocation.address,
           eventDistance: snapshot.val().eventDistance
         
         })
@@ -590,11 +608,11 @@ $(".searchBtn2").on("click", function(event) {
       eventDate: snapshot.val().eventDate,
       eventImage: snapshot.val().eventImage,
       venueName: snapshot.val().venueName,
-      eventCoordinates: snapshot.val().eventCoordinates,
+      eventCoordinates: snapshot.val().eventLocation.coordinates,
       eventTime: snapshot.val().eventTime,
       eventLongitude: snapshot.val().eventLongitude,
       eventLatitude: snapshot.val().eventLatitude,
-      eventAddress: snapshot.val().eventAddress,
+      eventAddress: snapshot.val().eventLocation.address,
       eventDistance: snapshot.val().eventDistance
     })
   })
@@ -797,10 +815,6 @@ $(".searchBtn2").on("click", function(event) {
       // Add +1
       counter++
       
-  
-      // // Google Maps
-      // latitude = element.eventLatitude;
-      // longitude = element.eventLongitude;
     htmladded = true
       }
     })
@@ -821,7 +835,6 @@ function initialize_map(id = 0) {
     disableDefaultUI: true,
     center: myLatlng
   };
-  console.log("my latlng is  ---- " + myLatlng)
   var map = new google.maps.Map(container, mapOptions);
   var contentString = '';
  
@@ -848,12 +861,9 @@ function placeMarker(map, location) {
 
 $(document).on('click', '.panel-title', function () {
   latitude = Number($(this).attr("latitude"));
-  console.log(latitude);
   longitude = Number($(this).attr("longitude"));
-  thisVenue = String($(this).data("venue"));
-  console.log(thisVenue);
-  thisAddress = String($(this).data("address"));
-  console.log(thisAddress);
+  thisVenue = $(this).data("venue");
+  thisAddress = $(this).data("address");
   myLatlng = new google.maps.LatLng(latitude,longitude)
   console.log('clicked this', this, $(this).attr('data-counter'))
   initialize_map($(this).attr('data-counter'));
