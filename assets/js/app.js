@@ -197,7 +197,7 @@ dataType: "json",
       venueName: venueName,
       eventTime: eventTime,
       eventDistance: eventDistance,
-      eventURL: eventURL
+      eventURL: eventURL,
     });
   }
 })
@@ -228,7 +228,9 @@ database.ref(`search`).on("child_added", function(snapshot) {
         eventLatitude: snapshot.val().eventLatitude,
         eventAddress: snapshot.val().eventLocation.address,
         eventDistance: snapshot.val().eventDistance,
-        eventURL: snapshot.val().eventURL
+        eventURL: snapshot.val().eventURL,
+        eventCity: snapshot.val().eventLocation.city,
+        eventState:snapshot.val().eventLocation.state
       
       })
       eventPriceCounter++
@@ -250,7 +252,9 @@ database.ref(`search`).on("child_added", function(snapshot) {
     eventLatitude: snapshot.val().eventLatitude,
     eventAddress: snapshot.val().eventLocation.address,
     eventDistance: snapshot.val().eventDistance,
-    eventURL: snapshot.val().eventURL
+    eventURL: snapshot.val().eventURL,
+    eventCity: snapshot.val().eventLocation.city,
+    eventState:snapshot.val().eventLocation.state
   })
 })
 })
@@ -282,7 +286,9 @@ $(document).ajaxStop(function() {
     .attr("longitude", element.eventLongitude)
     .attr("latitude", element.eventLatitude)
     .data("venue", element.venueName)
-    .data("address", element.eventAddress);
+    .data("address", element.eventAddress)
+    .data("city", element.eventCity)
+    .data("state", element.eventState);
     //row result-item
     var rowDiv = $("<div>").addClass("row result-item");
 
@@ -295,8 +301,7 @@ $(document).ajaxStop(function() {
     var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
     var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
     //Buy Now button that links the user to ticketmaster
-    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center"); 
-    console.log(ticketMasterButton);  
+    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy text-center");   
     detailsDiv.append(date_h3,name_h1,time_h3);
     //Append the Buy Now button to show on
     detailsDiv.append(date_h3,name_h1,time_h3,ticketMasterButton);
@@ -391,7 +396,9 @@ $(document).ajaxStop(function() {
     .attr("longitude", element.eventLongitude)
     .attr("latitude", element.eventLatitude)
     .data("venue", element.venueName)
-    .data("address", element.eventAddress);
+    .data("address", element.eventAddress)
+    .data("city", element.eventCity)
+    .data("state", element.eventState);
     //row result-item
     var rowDiv = $("<div>").addClass("row result-item");
 
@@ -573,7 +580,8 @@ $(".searchBtn2").on("click", function(event) {
         eventLatitude: eventLatitude,
         venueName: venueName,
         eventTime: eventTime,
-        eventDistance: eventDistance
+        eventDistance: eventDistance,
+        
       })
     }
   })
@@ -603,8 +611,9 @@ $(".searchBtn2").on("click", function(event) {
           eventLongitude: snapshot.val().eventLongitude,
           eventLatitude: snapshot.val().eventLatitude,
           eventAddress: snapshot.val().eventLocation.address,
-          eventDistance: snapshot.val().eventDistance
-        
+          eventDistance: snapshot.val().eventDistance,
+          eventCity: snapshot.val().eventLocation.city,
+          eventState:snapshot.val().eventLocation.state
         })
         eventPriceCounter++
         eventPriceObjectArray.sort(function(a,b) {
@@ -624,7 +633,9 @@ $(".searchBtn2").on("click", function(event) {
       eventLongitude: snapshot.val().eventLongitude,
       eventLatitude: snapshot.val().eventLatitude,
       eventAddress: snapshot.val().eventLocation.address,
-      eventDistance: snapshot.val().eventDistance
+      eventDistance: snapshot.val().eventDistance,
+      eventCity: snapshot.val().eventLocation.city,
+        eventState:snapshot.val().eventLocation.state
     })
   })
   })
@@ -656,7 +667,9 @@ $(".searchBtn2").on("click", function(event) {
         .attr("longitude", element.eventLongitude)
         .attr("latitude", element.eventLatitude)
         .data("venue", element.venueName)
-        .data("address", element.eventAddress);
+        .data("address", element.eventAddress)
+        .data("city", element.eventCity)
+        .data("state", element.eventState);
       //row result-item
       var rowDiv = $("<div>").addClass("row result-item");
   
@@ -751,7 +764,9 @@ $(".searchBtn2").on("click", function(event) {
         .attr("longitude", element.eventLongitude)
         .attr("latitude", element.eventLatitude)
         .data("venue", element.venueName)
-        .data("address", element.eventAddress);
+        .data("address", element.eventAddress)
+        .data("city", element.eventCity)
+        .data("state", element.eventState);
       //row result-item
       var rowDiv = $("<div>").addClass("row result-item");
   
@@ -833,7 +848,7 @@ $(".searchBtn2").on("click", function(event) {
 
 function initialize_map(id = 0) {
   var container = document.getElementById(`google-map${id.toString()}`)
-  console.log('container', container, `google-map${id.toString()}`, id)
+  // console.log('container', container, `google-map${id.toString()}`, id)
   if (!container) return
 
   myLatlng = new google.maps.LatLng(latitude,longitude);
@@ -860,7 +875,7 @@ function placeMarker(map, location) {
 
   // Infowindow
   var infowindow = new google.maps.InfoWindow({
-    content: thisVenue + '<br>' + thisAddress
+    content: thisVenue + '<br>' + thisAddress + '<br>' + thisCity + ', '+ thisState
   });
 
   infowindow.open(map,marker);
@@ -871,8 +886,9 @@ $(document).on('click', '.panel-title', function () {
   longitude = Number($(this).attr("longitude"));
   thisVenue = $(this).data("venue");
   thisAddress = $(this).data("address");
+  thisCity = $(this).data("city");
+  thisState = $(this).data("state");
   myLatlng = new google.maps.LatLng(latitude,longitude)
-  console.log('clicked this', this, $(this).attr('data-counter'))
   initialize_map($(this).attr('data-counter'));
 });
 
