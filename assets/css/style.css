@@ -175,6 +175,15 @@ span {
     z-index:100;
 }
 
+/* Error */
+.error {
+    font-family: Lato;
+    font-size: 1.5em;
+    margin-top: 50px;
+    margin-right: 25vw;
+    margin-left: 25vw;
+}
+
 /* Results Div & Accordion */
 .results-div {
     margin: 10px 20px;
