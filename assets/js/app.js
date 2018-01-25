@@ -138,6 +138,8 @@ dataType: "json",
     eventIDArray.push(eventID);
     // event name
     var eventName = response1._embedded.events[i].name;
+    //ticketmaster URL
+    var eventURL = response1._embedded.events[i].url;
     // event date
     var eventDate = response1._embedded.events[i].dates.start.dateTime;
     var eventDate = moment(eventDate).format("MMMM Do, YYYY");
@@ -183,7 +185,8 @@ dataType: "json",
       eventLatitude: eventLatitude,
       venueName: venueName,
       eventTime: eventTime,
-      eventDistance: eventDistance
+      eventDistance: eventDistance,
+      eventURL: eventURL
     })
   }
 })
@@ -213,7 +216,8 @@ database.ref(`search`).on("child_added", function(snapshot) {
         eventLongitude: snapshot.val().eventLongitude,
         eventLatitude: snapshot.val().eventLatitude,
         eventAddress: snapshot.val().eventAddress,
-        eventDistance: snapshot.val().eventDistance
+        eventDistance: snapshot.val().eventDistance,
+        eventURL: snapshot.val().eventURL
       
       })
       eventPriceCounter++
@@ -234,7 +238,8 @@ database.ref(`search`).on("child_added", function(snapshot) {
     eventLongitude: snapshot.val().eventLongitude,
     eventLatitude: snapshot.val().eventLatitude,
     eventAddress: snapshot.val().eventAddress,
-    eventDistance: snapshot.val().eventDistance
+    eventDistance: snapshot.val().eventDistance,
+    eventURL: snapshot.val().eventURL
   })
 })
 })
@@ -267,8 +272,17 @@ $(document).ajaxStop(function() {
     var detailsDiv = $("<div>").addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div");
     var date_h3 = $("<h3>").html(element.eventDate).addClass("event-date");
     var name_h1= $("<h1>").html(element.eventName).addClass("event-name");
-    var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");   
+    var time_h3 = $('<h3>').html(element.eventTime).addClass("event-time");
+    //Buy Now button that links the user to ticketmaster
+    var ticketMasterButton = $("<button>").html(`<a href="${element.eventURL}" target="_blank">Buy Now</a>`).addClass("btn btn-info btn-lg Buy");   
     detailsDiv.append(date_h3,name_h1,time_h3);
+    //Append the Buy Now button to show on
+    detailsDiv.append(date_h3,name_h1,time_h3,ticketMasterButton);
+
+    //event delegation. Open new tab on click to ticketmaster to purchase ticket
+    $("body").on("click", "a[href^='http']", function(event){
+      window.open(this.href);
+    });
 
     //pricing and location div
     var pricingDiv = $("<div>").addClass("col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div");
