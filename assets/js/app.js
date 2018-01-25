@@ -387,7 +387,7 @@ $(document).ready(function() {
 
   var today = year + "-" + month + "-" + day;       
   $("#date").attr("value", today);
-  $("#date-nav").attr("value", today);
+  $("#date2").attr("value", today);
 });
 
 // Scroll down animation - on click .search
