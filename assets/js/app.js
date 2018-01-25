@@ -122,12 +122,12 @@ dataType: "json",
 }).done(function(response1){
   // Check IF Budget Entered
   if (userBudget === 0) {
-    $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budet.</h1?`)
+    $(".results-div").html(`<h1 class="error">Oops! Must have SOME ca$h for tickets. Please enter a budget.</h1>`)
     return
   };
   // Check IF if no events
   if (response1._embedded === undefined){
-    $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. PLease Try another day!</h1?`)
+    $(".results-div").html(`<h1 class="error">Oops! No events found for ${noEventDate}. Please Try another date!</h1>`)
     return
   };
   // Add Data to Firebase (Loop)
