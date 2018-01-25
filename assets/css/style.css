@@ -121,7 +121,6 @@ video::-webkit-media-controls {
 
 .Buy {
     width: 100px;
-    height: 40px;
     border: 0px solid transparent;
     font-family: Lato;
     border-radius: 0;
@@ -238,7 +237,7 @@ h1 {
 
 .event-image {
     width:100%;
-    height:100%;
+    height:130px;
 }
 
 /* Event Details (Middle) */
