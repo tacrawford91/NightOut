@@ -9,8 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <!-- JQuery UI -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Bootstrap JS-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Bootstrap CSS -->
@@ -24,6 +22,7 @@
 
 </head>
 <body>
+<!-- Top Container -->
 <div class="container-fluid">
     <div class="main-page">
         <div class="row logo-txt center-block">
@@ -36,119 +35,113 @@
         </div>
         <div class="row">
             <form>
+                <!-- Search Fields -->
                 <div class="form-group">
                     <div id="main-search">
                         <input type="number" class="form-control" id="budget" aria-describedby="budgetHelp" placeholder="Budget (in Dollars)" required>
-                        <!-- <input type="zip" class="form-control" id="zip" aria-describedby="zipHelp" placeholder="City">
-                        <select id="state" class="state-main" name="state"><option value="---">State</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option></select> -->
                         <input class="form-control" type="date" id="date" required>
                         <a class="search" href="#page-results"><button type="submit" class="btn btn-primary btn-nav searchBtn">SEARCH</button></a>
                     </div>
                 </div>
             </form>    
-                
-            
         </div>
     </div>
-   <!-- add video background -->
+   <!-- Video BG -->
     <div class="div video-holder wrapper">
         <video autoplay loop id="video-background" muted src="assets/images/bg.mp4" type="video/mp4">
         </video>
     </div>
-    
 </div>
-   
-
-    <div class="container" id="page-results">
+<!-- End Top Container -->
+<!-- Bottom Container -->
+<div class="container" id="page-results">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
+            <!-- Navigation -->
+            <div class="navbar-header">
+                <!-- Responsive Nav -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            <!-- Navbar Left (Logo) -->
             <a class="navbar-brand" href="#">
                 <img src="assets/images/icon-dark.png" class="icon2"><span>NightOut</span>
-              </a>
-          </div>
+            </a>
+            </div>
       
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-right">
-              <div class="form-group">
-                <input type="number" class="form-control" id="budget2" aria-describedby="budgetHelp" placeholder="Budget (in Dollars)" required>
-                <!-- <input type="zip" class="form-control" id="zip-nav" aria-describedby="zipHelp" placeholder="City">
-                <select id="state" name="state"><option value="---">State</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option></select> -->
-                <input class="form-control" type="date" value="2018-01-13" id="date2" required>
-                <button type="submit" class="btn btn-primary btn-nav search-nav searchBtn2">SEARCH</button>
-            </div>
-            </form>
-        </div>
-        <div class="row loader loadingRow">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h1 class="loading-text">LOADING</h1>
-                <span></span>
-                <span></span>
-                <span></span>
+            <!-- Navbar Right (Search) -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="budget2" aria-describedby="budgetHelp" placeholder="Budget (in Dollars)" required>
+                        <input class="form-control" type="date" value="2018-01-13" id="date2" required>
+                        <button type="submit" class="btn btn-primary btn-nav search-nav searchBTN2">SEARCH</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="row results-div">
-            <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    </nav>
 
-                
-                
-                <div class="panel-group result-item" id="accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                                
-                                <div class="row result-item">
-                                    
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div">
-                                        <img src="assets/images/placeHolder.jpg" alt="image" class="event-image"/>
-                                    </div>
-                                    
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div">
-                                        <h3 class="event-date">Saturday, January 20 2018</h3>
-                                        <h1 class="event-name">Justin Timberlake - The Man Of The Woods Tour</h1>
-                                        <h3 class="event-time">7:00 PM</h3>
-                                        <h4 class="event-click">Click Event for Map Details</h4>
-                                    </div>
-                                    
-                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div">
-                                        <h3 class="start-as">Starting as low as</h3>
-                                        <h1 class="dollar">$</h1><h1 class="event-price">39</h1>
-                                        <h4 class="event-location">United Center</h4>
-                                        <h4 class="event-distance">2.1 Miles</h4>
-                                    </div>  
-                                </div> 
-                            </a>
-                            <i class="fa fa-chevron-down fa-spacing"></i>    
-                        </div>
-                        
-                        <div id="collapse1" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div id="google-map" class="marker" data-latitude="41.880697" data-longitude="-87.674181">
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                
-            </div> -->
+    <!-- Loader -->
+    <div class="row loader loadingRow">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="loading-text">LOADING</h1>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </div>
 
-  
+    <!-- Results -->
+    <div class="row results-div">
+    
+    <!-- Example (Justin Timberlake) -->
+    <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                  
+        <div class="panel-group result-item" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse1">                         
+                        <div class="row result-item">                           
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 img-div">
+                                <img src="assets/images/placeHolder.jpg" alt="image" class="event-image"/>
+                            </div>                         
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 details-div">
+                                <h3 class="event-date">Saturday, January 20 2018</h3>
+                                <h1 class="event-name">Justin Timberlake - The Man Of The Woods Tour</h1>
+                                <h3 class="event-time">7:00 PM</h3>
+                                <h4 class="event-click">Click Event for Map Details</h4>
+                            </div>                        
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pricing-div">
+                                <h3 class="start-as">Starting as low as</h3>
+                                <h1 class="dollar">$</h1><h1 class="event-price">39</h1>
+                                <h4 class="event-location">United Center</h4>
+                                <h4 class="event-distance">2.1 Miles</h4>
+                            </div>  
+                        </div> 
+                    </a>
+                    <i class="fa fa-chevron-down fa-spacing"></i>    
+                </div>        
+                <div id="collapse1" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div id="google-map" class="marker" data-latitude="41.880697" data-longitude="-87.674181">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+<!-- End Bottom Container -->
+
+<!-- Main Script -->
 <script src="assets/js/app.js"></script>
+<!-- Google Maps -->
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhEbzeYarWUO61Vc1RyoKDnIDvCZ6rmzU&callback=initialize_map">
 </script>
-
-
-<!-- <script src="assets/js/google.1.js"></script> -->
-<script src="assets/js/search.js"></script>    
 </body>
 </html>
