@@ -11,6 +11,12 @@ body {
 	background:-moz-radial-gradient(circle, #33495E, #2E2329);
 }
 
+a, a:hover, a:visited {
+    color: white;
+    text-decoration: none;
+    margin-left: -2px;
+}
+
 .container-fluid, .container {
     padding-left: 0px;
     padding-right: 0px;
@@ -107,6 +113,15 @@ video::-webkit-media-controls {
     height: 40px;
     margin: 5px;
     background: linear-gradient(to right, rgb(58, 185, 153) , rgb(110, 202, 96));
+    border: 0px solid transparent;
+    font-family: Lato;
+    border-radius: 0;
+    color: white;
+}
+
+.Buy {
+    width: 100px;
+    height: 40px;
     border: 0px solid transparent;
     font-family: Lato;
     border-radius: 0;
