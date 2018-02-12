@@ -6,8 +6,8 @@ Details provided:
 - Event Name
 - Event Price
 - Event Time
-- Event Location
-- Event Location Pinned on a map with address information.
+- Venue Name
+- Venue Location Pinned on a map with address information.
 - A link to Ticketmaster to purchase the ticket. 
 
 -Now Check the events new year and hop to it. 
