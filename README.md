@@ -10,6 +10,6 @@ Details provided:
 - Venue Location Pinned on a map with address information.
 - A link to Ticketmaster to purchase the ticket. 
 
--Now Check the events new year and hop to it. 
-**Gauranteed to start with a budget, and end with a blast!**
+-Now check the events near you and hop to it. 
+**NightOut - Gauranteed to start with a budget, and end with a blast!**
 
